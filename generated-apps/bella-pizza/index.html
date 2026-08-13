@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bella Pizza</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topo">
+    <nav class="nav">
+      <div class="logo">🍕 Bella Pizza</div>
+      <div class="links">
+        <a href="#inicio">Início</a>
+        <a href="#cardapio">Cardápio</a>
+        <a href="#pedido">Pedido</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <div class="hero-conteudo">
+        <span class="tag">Forno a lenha • Massa artesanal</span>
+        <h1>A pizza perfeita para deixar seu dia mais saboroso.</h1>
+        <p>Escolha suas pizzas favoritas no cardápio da Bella Pizza, adicione ao carrinho e acompanhe o total do seu pedido em tempo real.</p>
+        <a href="#cardapio" class="botao-principal">Ver cardápio</a>
+      </div>
+      <div class="hero-card">
+        <div class="pizza-visual">🍕</div>
+        <h2>Entrega rápida</h2>
+        <p>Pedidos quentinhos, preparados com ingredientes selecionados.</p>
+      </div>
+    </section>
+
+    <section id="cardapio" class="secao">
+      <div class="titulo-secao">
+        <span>Nosso cardápio</span>
+        <h2>Pizzas favoritas da casa</h2>
+      </div>
+
+      <div class="layout-pedido">
+        <div class="grid-cardapio" id="listaPizzas"></div>
+
+        <aside id="pedido" class="carrinho">
+          <div class="carrinho-topo">
+            <h2>Seu pedido</h2>
+            <span id="contadorItens">0 itens</span>
+          </div>
+
+          <div id="itensCarrinho" class="itens-carrinho">
+            <p class="vazio">Seu carrinho está vazio.</p>
+          </div>
+
+          <div class="resumo">
+            <div class="linha-resumo">
+              <span>Subtotal</span>
+              <strong id="subtotal">R$ 0,00</strong>
+            </div>
+            <div class="linha-resumo">
+              <span>Entrega</span>
+              <strong id="entrega">R$ 0,00</strong>
+            </div>
+            <div class="linha-resumo total">
+              <span>Total</span>
+              <strong id="total">R$ 0,00</strong>
+            </div>
+          </div>
+
+          <button id="finalizarPedido" class="botao-finalizar" disabled>Finalizar pedido</button>
+          <button id="limparCarrinho" class="botao-limpar" disabled>Limpar carrinho</button>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <p>Bella Pizza © 2026 • Sabor italiano na sua casa</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

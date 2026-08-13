@@ -132,7 +132,33 @@
           throw new Error(dados.error || "Erro ao consultar a IA.");
         }
 
-        resultado.textContent = dados.answer;
+        resultado.innerHTML = `
+  <div style="margin-bottom: 18px;">
+    ${dados.answer}
+  </div>
+
+  ${
+    dados.projeto
+      ? `
+        <a
+          href="/apps/${dados.projeto}/"
+          target="_blank"
+          style="
+            display: inline-block;
+            padding: 14px 24px;
+            background: #16a34a;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+          "
+        >
+          👁 Visualizar aplicativo
+        </a>
+      `
+      : ""
+  }
+`;
 
       } catch (erro) {
 
