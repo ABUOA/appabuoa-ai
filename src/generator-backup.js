@@ -1,4 +1,4 @@
-﻿const fs = require("fs");
+const fs = require("fs");
 const path = require("path");
 
 function nomeSeguroProjeto(nomeProjeto) {
@@ -9,7 +9,7 @@ function nomeSeguroProjeto(nomeProjeto) {
     .replace(/-+/g, "-");
 
   if (!nomeSeguro) {
-    throw new Error("Nome de projeto invÃ¡lido.");
+    throw new Error("Nome de projeto inválido.");
   }
 
   return nomeSeguro;
@@ -42,7 +42,7 @@ function obterPastaProjeto(nomeProjeto) {
     )
   ) {
     throw new Error(
-      "Caminho de projeto invÃ¡lido."
+      "Caminho de projeto inválido."
     );
   }
 
@@ -69,7 +69,7 @@ function validarCaminhoArquivo(
     caminhoRelativo.includes("../")
   ) {
     throw new Error(
-      "Caminho de arquivo nÃ£o permitido."
+      "Caminho de arquivo não permitido."
     );
   }
 
@@ -112,7 +112,7 @@ function criarProjeto(
 
   if (!Array.isArray(arquivos)) {
     throw new Error(
-      "Lista de arquivos invÃ¡lida."
+      "Lista de arquivos inválida."
     );
   }
 
@@ -130,7 +130,7 @@ function criarProjeto(
       typeof arquivo.content !== "string"
     ) {
       throw new Error(
-        "Arquivo gerado invÃ¡lido."
+        "Arquivo gerado inválido."
       );
     }
 
@@ -248,7 +248,7 @@ function lerProjeto(
     )
   ) {
     throw new Error(
-      "Projeto nÃ£o encontrado."
+      "Projeto não encontrado."
     );
   }
 
@@ -284,7 +284,7 @@ function criarBackupProjeto(
     )
   ) {
     throw new Error(
-      "Projeto nÃ£o encontrado."
+      "Projeto não encontrado."
     );
   }
 
@@ -357,7 +357,7 @@ function criarBackupProjeto(
 
 
 /* =========================================================
-   LISTAR VERSÃ•ES
+   LISTAR VERSÕES
 ========================================================= */
 
 function listarVersoes(
@@ -405,7 +405,7 @@ function listarVersoes(
 
 
 /* =========================================================
-   LER VERSÃƒO ANTIGA
+   LER VERSÃO ANTIGA
 ========================================================= */
 
 function lerVersaoProjeto(
@@ -427,7 +427,7 @@ function lerVersaoProjeto(
     )
   ) {
     throw new Error(
-      "VersÃ£o invÃ¡lida."
+      "Versão inválida."
     );
   }
 
@@ -453,7 +453,7 @@ function lerVersaoProjeto(
     )
   ) {
     throw new Error(
-      "Caminho de versÃ£o invÃ¡lido."
+      "Caminho de versão inválido."
     );
   }
 
@@ -463,7 +463,7 @@ function lerVersaoProjeto(
     )
   ) {
     throw new Error(
-      "VersÃ£o nÃ£o encontrada."
+      "Versão não encontrada."
     );
   }
 
@@ -486,7 +486,7 @@ function lerVersaoProjeto(
 
 
 /* =========================================================
-   RESTAURAR VERSÃƒO
+   RESTAURAR VERSÃO
 ========================================================= */
 
 function restaurarVersaoProjeto(
@@ -506,7 +506,7 @@ function restaurarVersaoProjeto(
     )
   ) {
     throw new Error(
-      "Projeto atual nÃ£o encontrado."
+      "Projeto atual não encontrado."
     );
   }
 
@@ -561,7 +561,7 @@ function restaurarVersaoProjeto(
 
 /* =========================================================
    SALVAR ARQUIVO EXISTENTE
-   COM BACKUP AUTOMÃTICO
+   COM BACKUP AUTOMÁTICO
 ========================================================= */
 
 function salvarArquivoProjeto(
@@ -582,7 +582,7 @@ function salvarArquivoProjeto(
     )
   ) {
     throw new Error(
-      "Projeto nÃ£o encontrado."
+      "Projeto não encontrado."
     );
   }
 
@@ -591,7 +591,7 @@ function salvarArquivoProjeto(
     "string"
   ) {
     throw new Error(
-      "ConteÃºdo do arquivo invÃ¡lido."
+      "Conteúdo do arquivo inválido."
     );
   }
 
@@ -609,7 +609,7 @@ function salvarArquivoProjeto(
     )
   ) {
     throw new Error(
-      "Arquivo nÃ£o encontrado."
+      "Arquivo não encontrado."
     );
   }
 
@@ -641,7 +641,7 @@ function salvarArquivoProjeto(
 
 /* =========================================================
    CRIAR NOVO ARQUIVO
-   COM BACKUP AUTOMÃTICO
+   COM BACKUP AUTOMÁTICO
 ========================================================= */
 
 function criarArquivoProjeto(
@@ -662,7 +662,7 @@ function criarArquivoProjeto(
     )
   ) {
     throw new Error(
-      "Projeto nÃ£o encontrado."
+      "Projeto não encontrado."
     );
   }
 
@@ -671,7 +671,7 @@ function criarArquivoProjeto(
     "string"
   ) {
     throw new Error(
-      "ConteÃºdo inicial invÃ¡lido."
+      "Conteúdo inicial inválido."
     );
   }
 
@@ -689,7 +689,7 @@ function criarArquivoProjeto(
     )
   ) {
     throw new Error(
-      "JÃ¡ existe um arquivo com esse nome."
+      "Já existe um arquivo com esse nome."
     );
   }
 
@@ -704,7 +704,7 @@ function criarArquivoProjeto(
     );
 
   /*
-    Permite criar arquivos tambÃ©m
+    Permite criar arquivos também
     dentro de subpastas.
 
     Exemplo:
@@ -744,7 +744,7 @@ function criarArquivoProjeto(
 
 /* =========================================================
    RENOMEAR ARQUIVO
-   COM BACKUP AUTOMÃTICO
+   COM BACKUP AUTOMÁTICO
 ========================================================= */
 
 function renomearArquivoProjeto(
@@ -760,7 +760,7 @@ function renomearArquivoProjeto(
   );
 
   if (!fs.existsSync(pastaBase)) {
-    throw new Error("Projeto nÃ£o encontrado.");
+    throw new Error("Projeto não encontrado.");
   }
 
   const atual = validarCaminhoArquivo(
@@ -775,17 +775,17 @@ function renomearArquivoProjeto(
 
   if (atual.caminhoRelativo === "index.html") {
     throw new Error(
-      "O arquivo index.html Ã© protegido e nÃ£o pode ser renomeado."
+      "O arquivo index.html é protegido e não pode ser renomeado."
     );
   }
 
   if (!fs.existsSync(atual.caminhoCompleto)) {
-    throw new Error("Arquivo nÃ£o encontrado.");
+    throw new Error("Arquivo não encontrado.");
   }
 
   if (fs.existsSync(novo.caminhoCompleto)) {
     throw new Error(
-      "JÃ¡ existe um arquivo com o novo nome."
+      "Já existe um arquivo com o novo nome."
     );
   }
 
@@ -814,7 +814,7 @@ function renomearArquivoProjeto(
 
 /* =========================================================
    EXCLUIR ARQUIVO
-   COM BACKUP AUTOMÃTICO
+   COM BACKUP AUTOMÁTICO
 ========================================================= */
 
 function excluirArquivoProjeto(
@@ -829,7 +829,7 @@ function excluirArquivoProjeto(
   );
 
   if (!fs.existsSync(pastaBase)) {
-    throw new Error("Projeto nÃ£o encontrado.");
+    throw new Error("Projeto não encontrado.");
   }
 
   const {
@@ -842,12 +842,12 @@ function excluirArquivoProjeto(
 
   if (caminhoRelativo === "index.html") {
     throw new Error(
-      "O arquivo index.html Ã© protegido e nÃ£o pode ser excluÃ­do."
+      "O arquivo index.html é protegido e não pode ser excluído."
     );
   }
 
   if (!fs.existsSync(caminhoCompleto)) {
-    throw new Error("Arquivo nÃ£o encontrado.");
+    throw new Error("Arquivo não encontrado.");
   }
 
   const backup =
@@ -869,8 +869,8 @@ function excluirArquivoProjeto(
 
 
 /* =========================================================
-   APLICAR OPERAÃ‡Ã•ES DA IA NO PROJETO INTEIRO
-   Valida tudo antes, cria um Ãºnico backup e sÃ³ entÃ£o aplica.
+   APLICAR OPERAÇÕES DA IA NO PROJETO INTEIRO
+   Valida tudo antes, cria um único backup e só então aplica.
 ========================================================= */
 
 function aplicarOperacoesProjeto(
@@ -883,11 +883,11 @@ function aplicarOperacoesProjeto(
   } = obterPastaProjeto(nomeProjeto);
 
   if (!fs.existsSync(pastaBase)) {
-    throw new Error("Projeto nÃ£o encontrado.");
+    throw new Error("Projeto não encontrado.");
   }
 
   if (!Array.isArray(operacoes) || operacoes.length === 0) {
-    throw new Error("Nenhuma operaÃ§Ã£o vÃ¡lida foi recebida.");
+    throw new Error("Nenhuma operação válida foi recebida.");
   }
 
   const validadas = [];
@@ -895,13 +895,13 @@ function aplicarOperacoesProjeto(
 
   for (const operacao of operacoes) {
     if (!operacao || typeof operacao !== "object") {
-      throw new Error("OperaÃ§Ã£o invÃ¡lida.");
+      throw new Error("Operação inválida.");
     }
 
     const tipo = String(operacao.tipo || "").toLowerCase().trim();
 
     if (!["criar", "alterar", "excluir"].includes(tipo)) {
-      throw new Error(`Tipo de operaÃ§Ã£o nÃ£o permitido: ${tipo}`);
+      throw new Error(`Tipo de operação não permitido: ${tipo}`);
     }
 
     const arquivo = validarCaminhoArquivo(
@@ -912,13 +912,13 @@ function aplicarOperacoesProjeto(
     if (tipo === "excluir") {
       if (arquivo.caminhoRelativo === "index.html") {
         throw new Error(
-          "A IA nÃ£o pode excluir o arquivo index.html."
+          "A IA não pode excluir o arquivo index.html."
         );
       }
 
       if (!fs.existsSync(arquivo.caminhoCompleto)) {
         throw new Error(
-          `Arquivo para exclusÃ£o nÃ£o encontrado: ${arquivo.caminhoRelativo}`
+          `Arquivo para exclusão não encontrado: ${arquivo.caminhoRelativo}`
         );
       }
 
@@ -932,13 +932,13 @@ function aplicarOperacoesProjeto(
 
     if (typeof operacao.content !== "string") {
       throw new Error(
-        `ConteÃºdo invÃ¡lido para ${arquivo.caminhoRelativo}.`
+        `Conteúdo inválido para ${arquivo.caminhoRelativo}.`
       );
     }
 
     if (destinos.has(arquivo.caminhoRelativo)) {
       throw new Error(
-        `OperaÃ§Ãµes duplicadas para o arquivo ${arquivo.caminhoRelativo}.`
+        `Operações duplicadas para o arquivo ${arquivo.caminhoRelativo}.`
       );
     }
 
@@ -949,7 +949,7 @@ function aplicarOperacoesProjeto(
       fs.existsSync(arquivo.caminhoCompleto)
     ) {
       throw new Error(
-        `A IA tentou criar um arquivo que jÃ¡ existe: ${arquivo.caminhoRelativo}`
+        `A IA tentou criar um arquivo que já existe: ${arquivo.caminhoRelativo}`
       );
     }
 
@@ -1004,7 +1004,7 @@ function aplicarOperacoesProjeto(
     };
 
   } catch (error) {
-    // Se uma gravaÃ§Ã£o falhar no meio, restaura o backup recÃ©m-criado.
+    // Se uma gravação falhar no meio, restaura o backup recém-criado.
     const versaoBackup = lerVersaoProjeto(
       nomeSeguro,
       backup.versao
@@ -1038,219 +1038,6 @@ function aplicarOperacoesProjeto(
 }
 
 
-
-/* =========================================================
-   DUPLICAR PROJETO
-   Cria uma copia independente sem alterar o projeto original.
-========================================================= */
-
-function duplicarProjeto(
-  nomeProjetoOrigem,
-  nomeNovoProjeto
-) {
-  const origem =
-    obterPastaProjeto(
-      nomeProjetoOrigem
-    );
-
-  const destino =
-    obterPastaProjeto(
-      nomeNovoProjeto
-    );
-
-  if (
-    !fs.existsSync(
-      origem.pastaBase
-    )
-  ) {
-    throw new Error(
-      "Projeto de origem nao encontrado."
-    );
-  }
-
-  if (
-    origem.nomeSeguro ===
-    destino.nomeSeguro
-  ) {
-    throw new Error(
-      "O novo projeto precisa ter um nome diferente do projeto original."
-    );
-  }
-
-  if (
-    fs.existsSync(
-      destino.pastaBase
-    )
-  ) {
-    throw new Error(
-      "Ja existe um projeto com esse nome."
-    );
-  }
-
-  fs.cpSync(
-    origem.pastaBase,
-    destino.pastaBase,
-    {
-      recursive: true,
-      errorOnExist: true,
-      force: false
-    }
-  );
-
-  const arquivosCopiados =
-    lerArquivosDaPasta(
-      destino.pastaBase
-    );
-
-  return {
-    success: true,
-    projetoOriginal:
-      origem.nomeSeguro,
-    projeto:
-      destino.nomeSeguro,
-    pasta:
-      destino.pastaBase,
-    quantidadeArquivos:
-      arquivosCopiados.length
-  };
-}
-
-/* =========================================================
-   RENOMEAR PROJETO
-   Mantem todos os arquivos e altera somente o nome da pasta.
-========================================================= */
-
-function renomearProjeto(
-  nomeProjetoAtual,
-  novoNomeProjeto
-) {
-  const atual =
-    obterPastaProjeto(
-      nomeProjetoAtual
-    );
-
-  const novo =
-    obterPastaProjeto(
-      novoNomeProjeto
-    );
-
-  if (
-    !fs.existsSync(
-      atual.pastaBase
-    )
-  ) {
-    throw new Error(
-      "Projeto atual nao encontrado."
-    );
-  }
-
-  if (
-    atual.nomeSeguro ===
-    novo.nomeSeguro
-  ) {
-    throw new Error(
-      "O novo nome precisa ser diferente do nome atual."
-    );
-  }
-
-  if (
-    fs.existsSync(
-      novo.pastaBase
-    )
-  ) {
-    throw new Error(
-      "Ja existe um projeto com esse nome."
-    );
-  }
-
-  fs.renameSync(
-    atual.pastaBase,
-    novo.pastaBase
-  );
-
-  const arquivos =
-    lerArquivosDaPasta(
-      novo.pastaBase
-    );
-
-  return {
-    success: true,
-
-    projetoAnterior:
-      atual.nomeSeguro,
-
-    projeto:
-      novo.nomeSeguro,
-
-    pasta:
-      novo.pastaBase,
-
-    quantidadeArquivos:
-      arquivos.length
-  };
-}
-
-/* =========================================================
-   EXCLUIR PROJETO
-   Cria backup completo antes da exclusao.
-========================================================= */
-
-function excluirProjeto(
-  nomeProjeto
-) {
-  const {
-    nomeSeguro,
-    pastaBase
-  } = obterPastaProjeto(
-    nomeProjeto
-  );
-
-  if (
-    !fs.existsSync(
-      pastaBase
-    )
-  ) {
-    throw new Error(
-      "Projeto nao encontrado."
-    );
-  }
-
-  /*
-    Antes de apagar o projeto,
-    criamos um backup completo.
-  */
-
-  const backup =
-    criarBackupProjeto(
-      nomeSeguro
-    );
-
-  const arquivosAntes =
-    lerArquivosDaPasta(
-      pastaBase
-    );
-
-  fs.rmSync(
-    pastaBase,
-    {
-      recursive: true,
-      force: true
-    }
-  );
-
-  return {
-    success: true,
-
-    projeto:
-      nomeSeguro,
-
-    quantidadeArquivos:
-      arquivosAntes.length,
-
-    backup:
-      backup.versao
-  };
-}
 module.exports = {
   criarProjeto,
   lerProjeto,
@@ -1262,10 +1049,5 @@ module.exports = {
   criarArquivoProjeto,
   renomearArquivoProjeto,
   excluirArquivoProjeto,
-  aplicarOperacoesProjeto,
-  duplicarProjeto,
-  renomearProjeto,
-  excluirProjeto
+  aplicarOperacoesProjeto
 };
-
-

@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AppABUOA AI</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #ffffff;
+    }
+
+    .container {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 36px 20px 60px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 48px;
+      text-align: center;
+    }
+
+    .subtitulo {
+      margin-bottom: 36px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 20px;
+    }
+
+    .creator {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      background: #1e293b;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      padding: 18px;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 16px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 14px;
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 10px;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #resultado {
+      display: none;
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 10px;
+      background: #0f172a;
+      text-align: left;
+    }
+
+    #meusApps {
+      margin-top: 38px;
+    }
+
+    .app-card {
+      margin-bottom: 20px;
+      padding: 18px;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      background: #1e293b;
+    }
+
+    .app-title {
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .app-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 18px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #334155;
+      align-items: start;
+    }
+
+    .left-column {
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 16px;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      background: #0f172a;
+    }
+
+    .panel h3 {
+      margin-top: 0;
+    }
+
+    .editor-status {
+      margin-top: 15px;
+      color: #cbd5e1;
+    }
+
+    .preview-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .preview-toolbar button {
+      margin-top: 0;
+      padding: 10px 14px;
+      font-size: 14px;
+    }
+
+    .preview-box {
+      min-height: 680px;
+      padding: 12px;
+      overflow: auto;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      background: #020617;
+    }
+
+    .preview-frame-wrap {
+      width: 100%;
+      margin: 0 auto;
+      transition: width 0.2s ease;
+    }
+
+    .preview-frame {
+      display: block;
+      width: 100%;
+      height: 650px;
+      border: 0;
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .files-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .file-button {
+      width: 100%;
+      margin: 0;
+      padding: 11px 12px;
+      text-align: left;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+
+    .file-button:hover {
+      background: #334155;
+    }
+
+    .code-panel {
+      margin-top: 14px;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .code-box {
+      width: 100%;
+      min-height: 320px;
+      max-height: 500px;
+      padding: 14px;
+      overflow: auto;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      background: #020617;
+      color: #e2e8f0;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+    }
+
+    .history-area {
+      margin-top: 18px;
+    }
+
+    .history-card {
+      margin-top: 10px;
+      padding: 14px;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      background: #0f172a;
+    }
+
+    .success-box {
+      margin-top: 15px;
+      margin-bottom: 15px;
+      padding: 18px;
+      border: 1px solid #22c55e;
+      border-radius: 10px;
+      background: #14532d;
+    }
+
+    .muted {
+      color: #94a3b8;
+    }
+
+    @media (max-width: 1050px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-box {
+        min-height: 560px;
+      }
+
+      .preview-frame {
+        height: 540px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>AppABUOA AI</h1>
+
+    <div class="subtitulo">
+      Transforme suas ideias em aplicativos com inteligência artificial.
+    </div>
+
+    <div class="creator">
+
+      <textarea
+        id="prompt"
+        placeholder="Descreva o aplicativo que você deseja criar..."
+      ></textarea>
+
+      <button onclick="criarApp()">
+        Criar com IA
+      </button>
+
+      <div id="resultado"></div>
+
+    </div>
+
+    <div id="meusApps"></div>
+
+  </div>
+
+  <script>
+
+    async function criarApp() {
+      const prompt =
+        document.getElementById("prompt").value;
+
+      const resultado =
+        document.getElementById("resultado");
+
+      if (!prompt.trim()) {
+        alert("Descreva primeiro o aplicativo que deseja criar.");
+        return;
+      }
+
+      resultado.style.display = "block";
+      resultado.textContent =
+        "✨ A inteligência artificial está trabalhando...";
+
+      try {
+        const resposta = await fetch("/api/ai", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            prompt
+          })
+        });
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Erro ao consultar a IA."
+          );
+        }
+
+        resultado.innerHTML = `
+          <strong>
+            ✅ Aplicativo criado com sucesso.
+          </strong>
+
+          <p>${dados.answer}</p>
+
+          <p>
+            Projeto:
+            <strong>${dados.projeto}</strong>
+          </p>
+        `;
+
+        await carregarApps();
+
+      } catch (erro) {
+        resultado.textContent =
+          "❌ Não foi possível gerar o aplicativo: " +
+          erro.message;
+      }
+    }
+
+
+    function visualizarApp(projeto) {
+      window.open(
+        `/apps/${projeto}/`,
+        "_blank"
+      );
+    }
+
+
+    async function carregarApps() {
+      const area =
+        document.getElementById("meusApps");
+
+      try {
+        const resposta =
+          await fetch("/api/apps");
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Não foi possível carregar os aplicativos."
+          );
+        }
+
+        if (!dados.apps.length) {
+          area.innerHTML = "";
+          return;
+        }
+
+        area.innerHTML = `
+          <h2>Meus Aplicativos</h2>
+
+          ${dados.apps.map(app => `
+            <div class="app-card">
+
+              <div class="app-title">
+                ${app.nome}
+              </div>
+
+              <div class="app-actions">
+
+                <button
+                  onclick="abrirWorkspace('${app.nome}')"
+                  style="background:#2563eb;"
+                >
+                  🧩 Abrir editor
+                </button>
+
+                <button
+                  onclick="visualizarApp('${app.nome}')"
+                  style="background:#16a34a;"
+                >
+                  ↗ Abrir em nova aba
+                </button>
+
+                <button
+                  onclick="carregarHistorico('${app.nome}')"
+                  style="background:#0f766e;"
+                >
+                  🕘 Histórico de versões
+                </button>
+
+              </div>
+
+              <div id="workspace-${app.nome}"></div>
+              <div id="historico-${app.nome}"></div>
+
+            </div>
+          `).join("")}
+        `;
+
+      } catch (erro) {
+        area.innerHTML =
+          "❌ Não foi possível carregar os aplicativos: " +
+          erro.message;
+      }
+    }
+
+
+    function abrirWorkspace(projeto) {
+      const area =
+        document.getElementById(
+          `workspace-${projeto}`
+        );
+
+      area.innerHTML = `
+        <div class="workspace">
+
+          <div class="left-column">
+
+            <div class="panel">
+
+              <h3>✨ Editor com IA</h3>
+
+              <p class="muted">
+                Descreva o que deseja alterar neste aplicativo.
+              </p>
+
+              <textarea
+                id="pedido-${projeto}"
+                placeholder="Exemplo: adicione login, troque as cores, crie uma tela de cadastro..."
+              ></textarea>
+
+              <button
+                onclick="editarAppExistente('${projeto}')"
+                style="background:#7c3aed;"
+              >
+                ✨ Aplicar alteração
+              </button>
+
+              <div
+                id="resultado-${projeto}"
+                class="editor-status"
+              ></div>
+
+            </div>
+
+            <div class="panel">
+
+              <h3>📁 Arquivos do projeto</h3>
+
+              <p class="muted">
+                Clique em um arquivo para visualizar o código.
+              </p>
+
+              <div
+                id="arquivos-${projeto}"
+                class="files-list"
+              >
+                Carregando arquivos...
+              </div>
+
+              <div
+                id="codigo-container-${projeto}"
+                class="code-panel"
+                style="display:none;"
+              >
+
+                <div class="code-header">
+                  <strong
+                    id="codigo-nome-${projeto}"
+                  ></strong>
+                </div>
+
+                <pre
+                  id="codigo-${projeto}"
+                  class="code-box"
+                ></pre>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="panel">
+
+            <h3>
+              👁 Preview — ${projeto}
+            </h3>
+
+            <div class="preview-toolbar">
+
+              <button
+                onclick="mudarPreview('${projeto}', 'desktop')"
+              >
+                🖥 Desktop
+              </button>
+
+              <button
+                onclick="mudarPreview('${projeto}', 'tablet')"
+              >
+                📱 Tablet
+              </button>
+
+              <button
+                onclick="mudarPreview('${projeto}', 'mobile')"
+              >
+                📲 Celular
+              </button>
+
+              <button
+                onclick="atualizarPreview('${projeto}')"
+                style="background:#0f766e;"
+              >
+                🔄 Atualizar
+              </button>
+
+              <button
+                onclick="visualizarApp('${projeto}')"
+                style="background:#475569;"
+              >
+                ↗ Nova aba
+              </button>
+
+            </div>
+
+            <div class="preview-box">
+
+              <div
+                id="preview-wrap-${projeto}"
+                class="preview-frame-wrap"
+              >
+
+                <iframe
+                  id="preview-frame-${projeto}"
+                  class="preview-frame"
+                  src="/apps/${projeto}/"
+                ></iframe>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      `;
+
+      carregarArquivos(projeto);
+    }
+
+
+    async function carregarArquivos(projeto) {
+      const area =
+        document.getElementById(
+          `arquivos-${projeto}`
+        );
+
+      try {
+        const resposta =
+          await fetch(
+            `/api/apps/${projeto}/files`
+          );
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Erro ao carregar arquivos."
+          );
+        }
+
+        if (!dados.arquivos.length) {
+          area.innerHTML =
+            '<span class="muted">Nenhum arquivo encontrado.</span>';
+          return;
+        }
+
+        area.innerHTML =
+          dados.arquivos.map(arquivo => `
+            <button
+              class="file-button"
+              onclick="abrirArquivo(
+                '${projeto}',
+                '${encodeURIComponent(arquivo.path)}'
+              )"
+            >
+              ${iconeArquivo(arquivo.path)}
+              ${arquivo.path}
+            </button>
+          `).join("");
+
+      } catch (erro) {
+        area.innerHTML =
+          "❌ Não foi possível carregar os arquivos: " +
+          erro.message;
+      }
+    }
+
+
+    function iconeArquivo(caminho) {
+      if (caminho.endsWith(".html")) {
+        return "📄";
+      }
+
+      if (caminho.endsWith(".css")) {
+        return "🎨";
+      }
+
+      if (caminho.endsWith(".js")) {
+        return "⚙️";
+      }
+
+      if (caminho.endsWith(".json")) {
+        return "🧾";
+      }
+
+      return "📄";
+    }
+
+
+    async function abrirArquivo(
+      projeto,
+      caminhoCodificado
+    ) {
+      const caminho =
+        decodeURIComponent(
+          caminhoCodificado
+        );
+
+      const container =
+        document.getElementById(
+          `codigo-container-${projeto}`
+        );
+
+      const nome =
+        document.getElementById(
+          `codigo-nome-${projeto}`
+        );
+
+      const codigo =
+        document.getElementById(
+          `codigo-${projeto}`
+        );
+
+      container.style.display = "block";
+
+      nome.textContent =
+        "📄 " + caminho;
+
+      codigo.textContent =
+        "Carregando código...";
+
+      try {
+        const resposta =
+          await fetch(
+            `/api/apps/${projeto}/file?path=${encodeURIComponent(caminho)}`
+          );
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Erro ao ler arquivo."
+          );
+        }
+
+        nome.textContent =
+          `${iconeArquivo(dados.path)} ${dados.path}`;
+
+        codigo.textContent =
+          dados.content;
+
+      } catch (erro) {
+        codigo.textContent =
+          "❌ Não foi possível ler o arquivo: " +
+          erro.message;
+      }
+    }
+
+
+    function mudarPreview(
+      projeto,
+      tipo
+    ) {
+      const wrap =
+        document.getElementById(
+          `preview-wrap-${projeto}`
+        );
+
+      if (!wrap) {
+        return;
+      }
+
+      if (tipo === "desktop") {
+        wrap.style.width = "100%";
+      }
+
+      if (tipo === "tablet") {
+        wrap.style.width = "768px";
+        wrap.style.maxWidth = "100%";
+      }
+
+      if (tipo === "mobile") {
+        wrap.style.width = "390px";
+        wrap.style.maxWidth = "100%";
+      }
+    }
+
+
+    function atualizarPreview(projeto) {
+      const frame =
+        document.getElementById(
+          `preview-frame-${projeto}`
+        );
+
+      if (!frame) {
+        return;
+      }
+
+      frame.src =
+        `/apps/${projeto}/?t=${Date.now()}`;
+    }
+
+
+    async function editarAppExistente(projeto) {
+      const pedido =
+        document.getElementById(
+          `pedido-${projeto}`
+        ).value;
+
+      const resultado =
+        document.getElementById(
+          `resultado-${projeto}`
+        );
+
+      if (!pedido.trim()) {
+        alert(
+          "Descreva a alteração desejada."
+        );
+        return;
+      }
+
+      resultado.innerHTML =
+        "✨ A inteligência artificial está editando...";
+
+      try {
+        const resposta =
+          await fetch("/api/edit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              projeto,
+              pedido
+            })
+          });
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Erro ao editar."
+          );
+        }
+
+        resultado.innerHTML = `
+          <div class="success-box">
+
+            <strong>
+              ✅ Alteração concluída!
+            </strong>
+
+            <p>
+              ${dados.answer}
+            </p>
+
+            <p style="font-size:14px;">
+              Backup criado:
+              <strong>
+                ${dados.backup || "sim"}
+              </strong>
+            </p>
+
+          </div>
+        `;
+
+        atualizarPreview(projeto);
+
+        await carregarArquivos(projeto);
+
+      } catch (erro) {
+        resultado.innerHTML =
+          "❌ Não foi possível editar: " +
+          erro.message;
+      }
+    }
+
+
+    async function carregarHistorico(projeto) {
+      const area =
+        document.getElementById(
+          `historico-${projeto}`
+        );
+
+      if (!area) {
+        return;
+      }
+
+      area.innerHTML =
+        "🕘 Carregando histórico de versões...";
+
+      try {
+        const resposta =
+          await fetch(
+            `/api/apps/${projeto}/versions`
+          );
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Erro ao carregar histórico."
+          );
+        }
+
+        if (!dados.versoes.length) {
+          area.innerHTML = `
+            <p class="muted">
+              Nenhuma versão anterior encontrada.
+            </p>
+          `;
+          return;
+        }
+
+        area.innerHTML = `
+          <div class="history-area">
+
+            <h3>
+              🕘 Histórico de versões
+            </h3>
+
+            ${dados.versoes.map(versao => `
+              <div class="history-card">
+
+                <strong>
+                  ${versao}
+                </strong>
+
+                <div class="app-actions">
+
+                  <button
+                    onclick="visualizarVersao(
+                      '${projeto}',
+                      '${versao}'
+                    )"
+                    style="background:#2563eb;"
+                  >
+                    👁 Visualizar versão
+                  </button>
+
+                  <button
+                    onclick="restaurarVersao(
+                      '${projeto}',
+                      '${versao}'
+                    )"
+                    style="background:#dc2626;"
+                  >
+                    ↩ Restaurar versão
+                  </button>
+
+                </div>
+
+              </div>
+            `).join("")}
+
+          </div>
+        `;
+
+      } catch (erro) {
+        area.innerHTML =
+          "❌ Não foi possível carregar o histórico: " +
+          erro.message;
+      }
+    }
+
+
+    async function visualizarVersao(
+      projeto,
+      versao
+    ) {
+      try {
+        const resposta =
+          await fetch(
+            `/api/apps/${projeto}/versions/${versao}`
+          );
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Erro ao visualizar versão."
+          );
+        }
+
+        const index =
+          dados.arquivos.find(
+            arquivo =>
+              arquivo.path === "index.html"
+          );
+
+        if (!index) {
+          throw new Error(
+            "Essa versão não possui index.html."
+          );
+        }
+
+        const css =
+          dados.arquivos.find(
+            arquivo =>
+              arquivo.path === "style.css"
+          );
+
+        const js =
+          dados.arquivos.find(
+            arquivo =>
+              arquivo.path === "script.js"
+          );
+
+        let html =
+          index.content;
+
+        if (css) {
+          html =
+            html.replace(
+              "</head>",
+              `<style>${css.content}</style></head>`
+            );
+        }
+
+        if (js) {
+          html =
+            html.replace(
+              "</body>",
+              `<script>${js.content}<\/script></body>`
+            );
+        }
+
+        const janela =
+          window.open(
+            "",
+            "_blank"
+          );
+
+        if (!janela) {
+          alert(
+            "O navegador bloqueou a abertura da versão."
+          );
+          return;
+        }
+
+        janela.document.open();
+        janela.document.write(html);
+        janela.document.close();
+
+      } catch (erro) {
+        alert(
+          "❌ Não foi possível visualizar a versão: " +
+          erro.message
+        );
+      }
+    }
+
+
+    async function restaurarVersao(
+      projeto,
+      versao
+    ) {
+      const confirmar =
+        window.confirm(
+          `Deseja restaurar a versão ${versao}?\n\nA versão atual será salva automaticamente antes da restauração.`
+        );
+
+      if (!confirmar) {
+        return;
+      }
+
+      try {
+        const resposta =
+          await fetch(
+            `/api/apps/${projeto}/versions/${versao}/restore`,
+            {
+              method: "POST"
+            }
+          );
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Erro ao restaurar versão."
+          );
+        }
+
+        await carregarHistorico(projeto);
+
+        const area =
+          document.getElementById(
+            `historico-${projeto}`
+          );
+
+        if (area) {
+          const mensagem =
+            document.createElement("div");
+
+          mensagem.className =
+            "success-box";
+
+          mensagem.innerHTML = `
+            <strong>
+              ✅ Versão restaurada com sucesso!
+            </strong>
+
+            <p>
+              Versão restaurada:
+              <strong>
+                ${dados.versaoRestaurada}
+              </strong>
+            </p>
+
+            <p>
+              Backup da versão anterior:
+              <strong>
+                ${dados.backupAnterior}
+              </strong>
+            </p>
+
+            <button
+              onclick="visualizarApp('${projeto}')"
+              style="background:#16a34a;"
+            >
+              👁 Abrir aplicativo restaurado
+            </button>
+          `;
+
+          area.prepend(mensagem);
+        }
+
+        atualizarPreview(projeto);
+
+        const arquivos =
+          document.getElementById(
+            `arquivos-${projeto}`
+          );
+
+        if (arquivos) {
+          await carregarArquivos(projeto);
+        }
+
+      } catch (erro) {
+        alert(
+          "❌ Não foi possível restaurar a versão: " +
+          erro.message
+        );
+      }
+    }
+
+
+    carregarApps();
+
+  </script>
+
+</body>
+</html>

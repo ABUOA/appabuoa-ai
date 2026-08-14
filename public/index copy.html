@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AppABUOA AI</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 50px 20px;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .subtitulo {
+      color: #94a3b8;
+      font-size: 20px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .creator {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      box-sizing: border-box;
+      padding: 18px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: white;
+      font-size: 17px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 18px;
+      padding: 14px 24px;
+      border: 0;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #resultado {
+      margin-top: 25px;
+      padding: 20px;
+      background: #0f172a;
+      border-radius: 10px;
+      text-align: left;
+      display: none;
+    }
+
+    #resultadoEdicao {
+      margin-top: 18px;
+      color: #cbd5e1;
+    }
+
+    #meusApps {
+      margin-top: 35px;
+      text-align: left;
+    }
+
+    .preview-area {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #334155;
+    }
+
+    .preview-toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .preview-box {
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 15px;
+      overflow: auto;
+    }
+
+    .preview-frame-wrap {
+      margin: 0 auto;
+      transition: width 0.2s ease;
+    }
+
+    .preview-frame {
+      width: 100%;
+      height: 650px;
+      border: 0;
+      border-radius: 10px;
+      background: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>AppABUOA AI</h1>
+
+    <div class="subtitulo">
+      Transforme suas ideias em aplicativos com inteligência artificial.
+    </div>
+
+    <div class="creator">
+
+      <textarea
+        id="prompt"
+        placeholder="Descreva o aplicativo que você deseja criar..."
+      ></textarea>
+
+      <button onclick="criarApp()">
+        Criar com IA
+      </button>
+
+      <div id="resultado"></div>
+
+    </div>
+
+    <div id="meusApps"></div>
+
+  </div>
+
+  <script>
+
+    async function criarApp() {
+      const prompt =
+        document.getElementById("prompt").value;
+
+      const resultado =
+        document.getElementById("resultado");
+
+      if (!prompt.trim()) {
+        alert("Descreva primeiro o aplicativo que deseja criar.");
+        return;
+      }
+
+      resultado.style.display = "block";
+      resultado.textContent =
+        "✨ A inteligência artificial está trabalhando...";
+
+      try {
+        const resposta = await fetch("/api/ai", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ prompt })
+        });
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error || "Erro ao consultar a IA."
+          );
+        }
+
+        resultado.innerHTML = `
+          <div style="margin-bottom:18px;">
+            ${dados.answer}
+          </div>
+
+          <div style="
+            margin-top:25px;
+            display:flex;
+            gap:15px;
+            flex-wrap:wrap;
+          ">
+            <button
+              onclick="abrirPreview('${dados.projeto}')"
+              style="background:#16a34a;"
+            >
+              👁 Visualizar aplicativo
+            </button>
+
+            <button
+              onclick="abrirEditor('${dados.projeto}')"
+              style="background:#7c3aed;"
+            >
+              ✨ Editar com IA
+            </button>
+          </div>
+
+          <div
+            id="editorIA"
+            style="
+              display:none;
+              margin-top:25px;
+              padding-top:20px;
+              border-top:1px solid #334155;
+            "
+          ></div>
+        `;
+
+        await carregarApps();
+
+      } catch (erro) {
+        resultado.textContent =
+          "❌ Não foi possível gerar o aplicativo: " +
+          erro.message;
+      }
+    }
+
+
+    function visualizarApp(projeto) {
+      window.open(`/apps/${projeto}/`, "_blank");
+    }
+
+
+    function abrirEditor(projeto) {
+      const editor =
+        document.getElementById("editorIA");
+
+      editor.style.display = "block";
+
+      editor.innerHTML = `
+        <h3>✨ Editar aplicativo com IA</h3>
+
+        <p style="color:#94a3b8;">
+          Descreva o que você deseja alterar no aplicativo.
+        </p>
+
+        <textarea
+          id="pedidoEdicao"
+          placeholder="Exemplo: adicione pagamento por cartão de crédito..."
+        ></textarea>
+
+        <button
+          onclick="editarApp('${projeto}')"
+          style="background:#7c3aed;"
+        >
+          Aplicar alteração
+        </button>
+
+        <div id="resultadoEdicao"></div>
+      `;
+    }
+
+
+    async function editarApp(projeto) {
+      const pedido =
+        document.getElementById("pedidoEdicao").value;
+
+      const resultadoEdicao =
+        document.getElementById("resultadoEdicao");
+
+      if (!pedido.trim()) {
+        alert("Descreva a alteração que deseja fazer.");
+        return;
+      }
+
+      resultadoEdicao.innerHTML =
+        "✨ A inteligência artificial está editando o aplicativo...";
+
+      try {
+        const resposta = await fetch("/api/edit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            projeto,
+            pedido
+          })
+        });
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error || "Erro ao editar o aplicativo."
+          );
+        }
+
+        resultadoEdicao.innerHTML = `
+          <div style="margin-top:20px;">
+            <strong>✅ Alteração concluída!</strong>
+
+            <p>${dados.answer}</p>
+
+            <button
+              onclick="abrirPreview('${dados.projeto}')"
+              style="background:#16a34a;"
+            >
+              👁 Visualizar nova versão
+            </button>
+          </div>
+        `;
+
+        await carregarApps();
+
+      } catch (erro) {
+        resultadoEdicao.innerHTML =
+          "❌ Não foi possível editar o aplicativo: " +
+          erro.message;
+      }
+    }
+
+
+    async function carregarApps() {
+      const area =
+        document.getElementById("meusApps");
+
+      try {
+        const resposta =
+          await fetch("/api/apps");
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Não foi possível carregar os aplicativos."
+          );
+        }
+
+        if (!dados.apps.length) {
+          area.innerHTML = "";
+          return;
+        }
+
+        area.innerHTML = `
+          <h2>Meus Aplicativos</h2>
+
+          <div style="
+            display:grid;
+            gap:15px;
+          ">
+
+            ${dados.apps.map(app => `
+              <div style="
+                background:#1e293b;
+                border:1px solid #334155;
+                border-radius:12px;
+                padding:18px;
+              ">
+
+                <strong style="font-size:18px;">
+                  ${app.nome}
+                </strong>
+
+                <div style="
+                  margin-top:12px;
+                  display:flex;
+                  gap:10px;
+                  flex-wrap:wrap;
+                ">
+                  <button
+                    onclick="abrirPreview('${app.nome}')"
+                    style="background:#16a34a;"
+                  >
+                    👁 Visualizar
+                  </button>
+
+                  <button
+                    onclick="abrirEditorExistente('${app.nome}')"
+                    style="background:#7c3aed;"
+                  >
+                    ✨ Editar com IA
+                  </button>
+
+                  <button
+                    onclick="carregarHistorico('${app.nome}')"
+                    style="background:#0f766e;"
+                  >
+                    🕘 Histórico de versões
+                  </button>
+                </div>
+
+                <div id="preview-${app.nome}"></div>
+                <div id="editor-${app.nome}"></div>
+                <div id="historico-${app.nome}"></div>
+
+              </div>
+            `).join("")}
+
+          </div>
+        `;
+
+      } catch (erro) {
+        area.innerHTML =
+          "❌ Não foi possível carregar os aplicativos: " +
+          erro.message;
+      }
+    }
+
+
+    function abrirPreview(projeto) {
+      const area =
+        document.getElementById(`preview-${projeto}`);
+
+      if (!area) {
+        visualizarApp(projeto);
+        return;
+      }
+
+      area.innerHTML = `
+        <div class="preview-area">
+          <h3>👁 Preview — ${projeto}</h3>
+
+          <div class="preview-toolbar">
+            <button
+              onclick="mudarPreview('${projeto}', 'desktop')"
+            >
+              🖥 Desktop
+            </button>
+
+            <button
+              onclick="mudarPreview('${projeto}', 'tablet')"
+            >
+              📱 Tablet
+            </button>
+
+            <button
+              onclick="mudarPreview('${projeto}', 'mobile')"
+            >
+              📲 Celular
+            </button>
+
+            <button
+              onclick="atualizarPreview('${projeto}')"
+              style="background:#0f766e;"
+            >
+              🔄 Atualizar
+            </button>
+
+            <button
+              onclick="visualizarApp('${projeto}')"
+              style="background:#475569;"
+            >
+              ↗ Abrir em nova aba
+            </button>
+          </div>
+
+          <div class="preview-box">
+            <div
+              id="preview-wrap-${projeto}"
+              class="preview-frame-wrap"
+              style="width:100%;"
+            >
+              <iframe
+                id="preview-frame-${projeto}"
+                class="preview-frame"
+                src="/apps/${projeto}/"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+
+    function mudarPreview(projeto, tipo) {
+      const wrap =
+        document.getElementById(
+          `preview-wrap-${projeto}`
+        );
+
+      if (!wrap) {
+        return;
+      }
+
+      if (tipo === "desktop") {
+        wrap.style.width = "100%";
+      }
+
+      if (tipo === "tablet") {
+        wrap.style.width = "768px";
+        wrap.style.maxWidth = "100%";
+      }
+
+      if (tipo === "mobile") {
+        wrap.style.width = "390px";
+        wrap.style.maxWidth = "100%";
+      }
+    }
+
+
+    function atualizarPreview(projeto) {
+      const frame =
+        document.getElementById(
+          `preview-frame-${projeto}`
+        );
+
+      if (!frame) {
+        return;
+      }
+
+      frame.src =
+        `/apps/${projeto}/?t=${Date.now()}`;
+    }
+
+
+    function abrirEditorExistente(projeto) {
+      const editor =
+        document.getElementById(
+          `editor-${projeto}`
+        );
+
+      editor.innerHTML = `
+        <div style="
+          margin-top:20px;
+          padding-top:15px;
+          border-top:1px solid #334155;
+        ">
+          <textarea
+            id="pedido-${projeto}"
+            placeholder="Descreva o que deseja alterar..."
+          ></textarea>
+
+          <button
+            onclick="editarAppExistente('${projeto}')"
+            style="background:#7c3aed;"
+          >
+            Aplicar alteração
+          </button>
+
+          <div id="resultado-${projeto}"></div>
+        </div>
+      `;
+    }
+
+
+    async function editarAppExistente(projeto) {
+      const pedido =
+        document.getElementById(
+          `pedido-${projeto}`
+        ).value;
+
+      const resultado =
+        document.getElementById(
+          `resultado-${projeto}`
+        );
+
+      if (!pedido.trim()) {
+        alert("Descreva a alteração desejada.");
+        return;
+      }
+
+      resultado.innerHTML =
+        "✨ A inteligência artificial está editando...";
+
+      try {
+        const resposta =
+          await fetch("/api/edit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              projeto,
+              pedido
+            })
+          });
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error || "Erro ao editar."
+          );
+        }
+
+        resultado.innerHTML = `
+          <p>✅ ${dados.answer}</p>
+
+          <button
+            onclick="abrirPreview('${dados.projeto}')"
+            style="background:#16a34a;"
+          >
+            👁 Visualizar nova versão
+          </button>
+        `;
+
+        atualizarPreview(projeto);
+        await carregarHistorico(projeto);
+
+      } catch (erro) {
+        resultado.innerHTML =
+          "❌ Não foi possível editar: " +
+          erro.message;
+      }
+    }
+
+
+    async function carregarHistorico(projeto) {
+      const area =
+        document.getElementById(
+          `historico-${projeto}`
+        );
+
+      if (!area) {
+        return;
+      }
+
+      area.innerHTML =
+        "🕘 Carregando histórico de versões...";
+
+      try {
+        const resposta =
+          await fetch(
+            `/api/apps/${projeto}/versions`
+          );
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Erro ao carregar histórico."
+          );
+        }
+
+        if (!dados.versoes.length) {
+          area.innerHTML = `
+            <p style="color:#94a3b8;">
+              Nenhuma versão anterior encontrada.
+            </p>
+          `;
+          return;
+        }
+
+        area.innerHTML = `
+          <div style="
+            margin-top:20px;
+            padding-top:15px;
+            border-top:1px solid #334155;
+          ">
+            <h3>🕘 Histórico de versões</h3>
+
+            ${dados.versoes.map(versao => `
+              <div style="
+                background:#0f172a;
+                border:1px solid #334155;
+                border-radius:10px;
+                padding:14px;
+                margin-top:10px;
+              ">
+                <strong>${versao}</strong>
+
+                <div style="
+                  margin-top:12px;
+                  display:flex;
+                  gap:10px;
+                  flex-wrap:wrap;
+                ">
+                  <button
+                    onclick="visualizarVersao('${projeto}', '${versao}')"
+                    style="background:#2563eb;"
+                  >
+                    👁 Visualizar versão
+                  </button>
+
+                  <button
+                    onclick="restaurarVersao('${projeto}', '${versao}')"
+                    style="background:#dc2626;"
+                  >
+                    ↩ Restaurar versão
+                  </button>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+
+      } catch (erro) {
+        area.innerHTML =
+          "❌ Não foi possível carregar o histórico: " +
+          erro.message;
+      }
+    }
+
+
+    async function visualizarVersao(
+      projeto,
+      versao
+    ) {
+      try {
+        const resposta =
+          await fetch(
+            `/api/apps/${projeto}/versions/${versao}`
+          );
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Erro ao visualizar versão."
+          );
+        }
+
+        const index =
+          dados.arquivos.find(
+            arquivo =>
+              arquivo.path === "index.html"
+          );
+
+        if (!index) {
+          throw new Error(
+            "Essa versão não possui index.html."
+          );
+        }
+
+        const css =
+          dados.arquivos.find(
+            arquivo =>
+              arquivo.path === "style.css"
+          );
+
+        const js =
+          dados.arquivos.find(
+            arquivo =>
+              arquivo.path === "script.js"
+          );
+
+        let html =
+          index.content;
+
+        if (css) {
+          html =
+            html.replace(
+              "</head>",
+              `<style>${css.content}</style></head>`
+            );
+        }
+
+        if (js) {
+          html =
+            html.replace(
+              "</body>",
+              `<script>${js.content}<\/script></body>`
+            );
+        }
+
+        const janela =
+          window.open("", "_blank");
+
+        if (!janela) {
+          alert(
+            "O navegador bloqueou a abertura da versão."
+          );
+          return;
+        }
+
+        janela.document.open();
+        janela.document.write(html);
+        janela.document.close();
+
+      } catch (erro) {
+        alert(
+          "❌ Não foi possível visualizar a versão: " +
+          erro.message
+        );
+      }
+    }
+
+
+    async function restaurarVersao(
+      projeto,
+      versao
+    ) {
+      const confirmar =
+        window.confirm(
+          `Deseja restaurar a versão ${versao}?\n\nA versão atual será salva automaticamente antes da restauração.`
+        );
+
+      if (!confirmar) {
+        return;
+      }
+
+      try {
+        const resposta =
+          await fetch(
+            `/api/apps/${projeto}/versions/${versao}/restore`,
+            {
+              method: "POST"
+            }
+          );
+
+        const dados =
+          await resposta.json();
+
+        if (!resposta.ok || !dados.success) {
+          throw new Error(
+            dados.error ||
+            "Erro ao restaurar versão."
+          );
+        }
+
+        await carregarHistorico(projeto);
+
+        const area =
+          document.getElementById(
+            `historico-${projeto}`
+          );
+
+        if (!area) {
+          return;
+        }
+
+        const mensagem =
+          document.createElement("div");
+
+        mensagem.style.cssText = `
+          margin-top:15px;
+          margin-bottom:15px;
+          padding:18px;
+          background:#14532d;
+          border:1px solid #22c55e;
+          border-radius:10px;
+        `;
+
+        mensagem.innerHTML = `
+          <strong>
+            ✅ Versão restaurada com sucesso!
+          </strong>
+
+          <p>
+            Versão restaurada:
+            <strong>
+              ${dados.versaoRestaurada}
+            </strong>
+          </p>
+
+          <p>
+            Backup da versão anterior:
+            <strong>
+              ${dados.backupAnterior}
+            </strong>
+          </p>
+
+          <button
+            onclick="abrirPreview('${projeto}')"
+            style="background:#16a34a;"
+          >
+            👁 Abrir aplicativo restaurado
+          </button>
+        `;
+
+        area.prepend(mensagem);
+
+        atualizarPreview(projeto);
+
+      } catch (erro) {
+        alert(
+          "❌ Não foi possível restaurar a versão: " +
+          erro.message
+        );
+      }
+    }
+
+
+    carregarApps();
+
+  </script>
+
+</body>
+</html>

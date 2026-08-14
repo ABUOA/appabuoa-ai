@@ -17,11 +17,6 @@ const {
   excluirProjeto
 } = require("./generator");
 
-const {
-  registrarHistoricoIA,
-  lerHistoricoIA
-} = require("./ai-history");
-
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -356,35 +351,6 @@ Regras:
       }
     }
 
-    registrarHistoricoIA(
-      projetoAtual.projeto,
-      {
-        tipo:
-          "plano_gerado",
-
-        pedido:
-          String(pedido).trim(),
-
-        resumo:
-          planoIA.resumo ||
-          "Plano criado.",
-
-        plano:
-          planoIA.plano,
-
-        alertas:
-          Array.isArray(
-            planoIA.alertas
-          )
-            ? planoIA.alertas
-            : [],
-
-        quantidadeOperacoes:
-          planoIA.plano.length
-      }
-    );
-
-
     res.json({
       success: true,
 
@@ -684,37 +650,6 @@ REGRAS OBRIGATORIAS:
         projetoAtual.projeto,
         resultadoIA.operacoes
       );
-
-    registrarHistoricoIA(
-      resultado.projeto,
-      {
-        tipo:
-          "plano_aplicado",
-
-        pedido:
-          String(pedido).trim(),
-
-        planoAprovado:
-          planoAprovado,
-
-        resumo:
-          resultadoIA.resumo ||
-          "Plano aplicado com sucesso.",
-
-        operacoes:
-          resultado.operacoes,
-
-        quantidadeOperacoes:
-          resultado.operacoes.length,
-
-        backup:
-          resultado.backup,
-
-        resultado:
-          "sucesso"
-      }
-    );
-
 
     res.json({
       success: true,
@@ -1751,62 +1686,6 @@ app.get(
     }
   }
 );
-
-/* =========================================================
-   HISTORICO DA IA DO PROJETO
-   Somente leitura.
-========================================================= */
-
-app.get(
-  "/api/apps/:projeto/ai-history",
-  (req, res) => {
-    try {
-      const {
-        projeto
-      } = req.params;
-
-      /*
-        Confirma que o projeto existe.
-      */
-      const projetoAtual =
-        lerProjeto(
-          projeto
-        );
-
-      const historico =
-        lerHistoricoIA(
-          projetoAtual.projeto
-        );
-
-      res.json({
-        success: true,
-
-        projeto:
-          historico.projeto,
-
-        registros:
-          historico.registros,
-
-        quantidade:
-          historico.registros.length
-      });
-
-    } catch (error) {
-      console.error(
-        "Erro ao carregar historico da IA:",
-        error
-      );
-
-      res.status(500).json({
-        success: false,
-        error:
-          error.message ||
-          "Erro ao carregar historico da IA."
-      });
-    }
-  }
-);
-
 const PORT =
   process.env.PORT || 3000;
 

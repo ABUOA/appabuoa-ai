@@ -452,14 +452,14 @@
     <h1>AppABUOA AI</h1>
 
     <div class="subtitulo">
-      Transforme suas ideias em aplicativos com inteligência artificial.
+      Transforme suas ideias em aplicativos com inteligÃªncia artificial.
     </div>
 
     <div class="creator">
 
       <textarea
         id="prompt"
-        placeholder="Descreva o aplicativo que você deseja criar..."
+        placeholder="Descreva o aplicativo que vocÃª deseja criar..."
       ></textarea>
 
       <button onclick="criarApp()">
@@ -479,7 +479,6 @@
     const arquivosAbertos = {};
     const conteudosOriginais = {};
     let projetoAtivo = null;
-    const planosPendentes = {};
 
 
     async function criarApp() {
@@ -496,7 +495,7 @@
 
       resultado.style.display = "block";
       resultado.textContent =
-        "✨ A inteligência artificial está trabalhando...";
+        "âœ¨ A inteligÃªncia artificial estÃ¡ trabalhando...";
 
       try {
         const resposta = await fetch("/api/ai", {
@@ -516,7 +515,7 @@
         }
 
         resultado.innerHTML = `
-          <strong>✅ Aplicativo criado com sucesso.</strong>
+          <strong>âœ… Aplicativo criado com sucesso.</strong>
           <p>${dados.answer}</p>
           <p>
             Projeto:
@@ -528,7 +527,7 @@
 
       } catch (erro) {
         resultado.textContent =
-          "❌ Não foi possível gerar o aplicativo: " +
+          "âŒ NÃ£o foi possÃ­vel gerar o aplicativo: " +
           erro.message;
       }
     }
@@ -610,142 +609,6 @@
       }
     }
 
-
-    async function renomearProjetoInterface(projeto) {
-      if (
-        projetoAtivo === projeto &&
-        existeAlteracaoNaoSalvaNoProjeto(projeto)
-      ) {
-        alert(
-          "Este projeto possui alterações não salvas. Salve ou desfaça antes de renomear."
-        );
-        return;
-      }
-
-      const novoNome =
-        window.prompt(
-          "Digite o novo nome do projeto:",
-          projeto
-        );
-
-      if (
-        novoNome === null ||
-        !novoNome.trim() ||
-        novoNome.trim() === projeto
-      ) {
-        return;
-      }
-
-      try {
-        const resposta =
-          await fetch(
-            `/api/apps/${projeto}/rename`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                novoNome:
-                  novoNome.trim()
-              })
-            }
-          );
-
-        const dados =
-          await resposta.json();
-
-        if (!resposta.ok || !dados.success) {
-          throw new Error(
-            dados.error ||
-            "Erro ao renomear projeto."
-          );
-        }
-
-        if (projetoAtivo === projeto) {
-          projetoAtivo = null;
-        }
-
-        alert(
-          `✅ Projeto renomeado com sucesso.\n\nAnterior: ${dados.projetoAnterior}\nNovo nome: ${dados.projeto}\nArquivos: ${dados.quantidadeArquivos}`
-        );
-
-        await carregarApps();
-
-      } catch (erro) {
-        alert(
-          "❌ Não foi possível renomear o projeto: " +
-          erro.message
-        );
-      }
-    }
-
-
-    async function excluirProjetoInterface(projeto) {
-      if (
-        projetoAtivo === projeto &&
-        existeAlteracaoNaoSalvaNoProjeto(projeto)
-      ) {
-        alert(
-          "Este projeto possui alterações não salvas. Salve ou desfaça antes de excluir."
-        );
-        return;
-      }
-
-      const confirmar =
-        window.confirm(
-          `Excluir definitivamente o projeto "${projeto}"?\n\nUm backup completo será criado automaticamente antes da exclusão.`
-        );
-
-      if (!confirmar) {
-        return;
-      }
-
-      try {
-        const resposta =
-          await fetch(
-            `/api/apps/${projeto}/delete`,
-            {
-              method: "DELETE"
-            }
-          );
-
-        const dados =
-          await resposta.json();
-
-        if (!resposta.ok || !dados.success) {
-          throw new Error(
-            dados.error ||
-            "Erro ao excluir projeto."
-          );
-        }
-
-        if (projetoAtivo === projeto) {
-          projetoAtivo = null;
-        }
-
-        alert(
-          `✅ Projeto excluído com sucesso.\n\nProjeto: ${dados.projeto}\nArquivos removidos: ${dados.quantidadeArquivos}\nBackup: ${dados.backup}`
-        );
-
-        await carregarApps();
-
-      } catch (erro) {
-        alert(
-          "❌ Não foi possível excluir o projeto: " +
-          erro.message
-        );
-      }
-    }
-
-
-    function baixarProjetoZip(projeto) {
-      const url =
-        `/api/apps/${encodeURIComponent(projeto)}/download`;
-
-      window.location.href = url;
-    }
-
     function visualizarApp(projeto) {
       window.open(
         `/apps/${projeto}/`,
@@ -768,7 +631,7 @@
         if (!resposta.ok || !dados.success) {
           throw new Error(
             dados.error ||
-            "Não foi possível carregar os aplicativos."
+            "NÃ£o foi possÃ­vel carregar os aplicativos."
           );
         }
 
@@ -792,51 +655,27 @@
                 <button
                   onclick="abrirWorkspace('${app.nome}')"
                 >
-                  🧩 Abrir editor
+                  ðŸ§© Abrir editor
                 </button>
 
                 <button
                   onclick="visualizarApp('${app.nome}')"
                   style="background:#16a34a;"
                 >
-                  ↗ Abrir em nova aba
+                  â†— Abrir em nova aba
                 </button>
 
                 <button
                   onclick="carregarHistorico('${app.nome}')"
                   style="background:#0f766e;"
                 >
-                  🕘 Histórico de versões
+                  ðŸ•˜ HistÃ³rico de versÃµes
                 </button>
                 <button
                   onclick="duplicarProjetoInterface('${app.nome}')"
                   style="background:#d97706;"
                 >
                   &#128209; Duplicar projeto
-                </button>
-                <button
-                  onclick="renomearProjetoInterface('${app.nome}')"
-                  style="background:#2563eb;"
-                >
-                  ✏️ Renomear projeto
-                </button>
-                <button
-                  onclick="excluirProjetoInterface('${app.nome}')"
-                  style="background:#dc2626;"
-                >
-                  🗑️ Excluir projeto
-                </button>
-                <button
-                  onclick="baixarProjetoZip('${app.nome}')"
-                  style="background:#7c3aed;"
-                >
-                  📦 Baixar ZIP
-                </button>
-                <button
-                  onclick="carregarHistoricoIA('${app.nome}')"
-                  style="background:#0891b2;"
-                >
-                  🤖 Histórico da IA
                 </button>
 
               </div>
@@ -850,7 +689,7 @@
 
       } catch (erro) {
         area.innerHTML =
-          "❌ Não foi possível carregar os aplicativos: " +
+          "âŒ NÃ£o foi possÃ­vel carregar os aplicativos: " +
           erro.message;
       }
     }
@@ -920,7 +759,7 @@
         )
       ) {
         alert(
-          "Existe um arquivo com alterações não salvas. Salve ou desfaça antes de fechar o editor."
+          "Existe um arquivo com alteraÃ§Ãµes nÃ£o salvas. Salve ou desfaÃ§a antes de fechar o editor."
         );
         return;
       }
@@ -940,7 +779,7 @@
           )
         ) {
           alert(
-            `O projeto ${projetoAtivo} possui alterações não salvas.\n\nSalve ou desfaça essas alterações antes de abrir outro projeto.`
+            `O projeto ${projetoAtivo} possui alteraÃ§Ãµes nÃ£o salvas.\n\nSalve ou desfaÃ§a essas alteraÃ§Ãµes antes de abrir outro projeto.`
           );
           return;
         }
@@ -985,7 +824,7 @@
       area.innerHTML = `
         <div class="active-project-banner">
           <span>
-            🟢 EDITANDO AGORA:
+            ðŸŸ¢ EDITANDO AGORA:
             <span class="project-name">
               ${projeto}
             </span>
@@ -995,7 +834,7 @@
             onclick="fecharProjetoAtivo()"
             title="Fechar editor deste projeto"
           >
-            ✕ Fechar editor
+            âœ• Fechar editor
           </button>
         </div>
 
@@ -1006,7 +845,7 @@
             <div class="panel">
 
               <h3>
-                ✨ Editor com IA — ${projeto}
+                âœ¨ Editor com IA â€” ${projeto}
               </h3>
 
               <p class="muted">
@@ -1018,11 +857,11 @@
                 placeholder="Exemplo: adicione login, troque as cores, crie uma tela de cadastro..."
               ></textarea>
 
-                            <button
-                onclick="gerarPlanoIA('${projeto}')"
+              <button
+                onclick="editarAppExistente('${projeto}')"
                 style="background:#7c3aed;"
               >
-                🧠 Gerar plano
+                âœ¨ Aplicar alteraÃ§Ã£o
               </button>
 
               <div
@@ -1030,42 +869,13 @@
                 class="editor-status"
               ></div>
 
-              <div
-                id="plano-container-${projeto}"
-                style="display:none; margin-top:14px;"
-              >
-                <div
-                  id="plano-conteudo-${projeto}"
-                  class="panel"
-                ></div>
-
-                <div
-                  class="app-actions"
-                >
-                  <button
-                    id="aprovar-plano-${projeto}"
-                    onclick="aprovarPlanoIA('${projeto}')"
-                    style="background:#16a34a;"
-                  >
-                    ✅ Aprovar e aplicar
-                  </button>
-
-                  <button
-                    onclick="cancelarPlanoIA('${projeto}')"
-                    style="background:#dc2626;"
-                  >
-                    ❌ Cancelar
-                  </button>
-                </div>
-              </div>
-
             </div>
 
 
             <div class="panel">
 
               <h3>
-                📁 Arquivos do projeto — ${projeto}
+                ðŸ“ Arquivos do projeto â€” ${projeto}
               </h3>
 
               <p class="muted">
@@ -1085,7 +895,7 @@
                     "
                   >
                   <button onclick="criarNovoArquivo('${projeto}')">
-                    ➕ Novo arquivo
+                    âž• Novo arquivo
                   </button>
                 </div>
                 <div
@@ -1124,7 +934,7 @@
                   <input
                     id="buscar-${projeto}"
                     type="text"
-                    placeholder="Buscar no código..."
+                    placeholder="Buscar no cÃ³digo..."
                     onkeydown="
                       if(event.key === 'Enter') {
                         buscarNoCodigo('${projeto}');
@@ -1136,7 +946,7 @@
                     onclick="buscarNoCodigo('${projeto}')"
                     style="background:#475569;"
                   >
-                    🔎 Buscar
+                    ðŸ”Ž Buscar
                   </button>
 
                 </div>
@@ -1168,21 +978,21 @@
                     onclick="salvarArquivo('${projeto}')"
                     style="background:#16a34a;"
                   >
-                    💾 Salvar arquivo
+                    ðŸ’¾ Salvar arquivo
                   </button>
 
                   <button
                     onclick="desfazerAlteracao('${projeto}')"
                     style="background:#475569;"
                   >
-                    ↩ Desfazer alterações
+                    â†© Desfazer alteraÃ§Ãµes
                   </button>
 
                   <button
                     onclick="atualizarPreview('${projeto}')"
                     style="background:#0f766e;"
                   >
-                    🔄 Atualizar Preview
+                    ðŸ”„ Atualizar Preview
                   </button>
 
                 </div>
@@ -1202,7 +1012,7 @@
           <div class="panel">
 
             <h3>
-              👁 Preview — ${projeto}
+              ðŸ‘ Preview â€” ${projeto}
             </h3>
 
             <div class="preview-toolbar">
@@ -1210,33 +1020,33 @@
               <button
                 onclick="mudarPreview('${projeto}', 'desktop')"
               >
-                🖥 Desktop
+                ðŸ–¥ Desktop
               </button>
 
               <button
                 onclick="mudarPreview('${projeto}', 'tablet')"
               >
-                📱 Tablet
+                ðŸ“± Tablet
               </button>
 
               <button
                 onclick="mudarPreview('${projeto}', 'mobile')"
               >
-                📲 Celular
+                ðŸ“² Celular
               </button>
 
               <button
                 onclick="atualizarPreview('${projeto}')"
                 style="background:#0f766e;"
               >
-                🔄 Atualizar
+                ðŸ”„ Atualizar
               </button>
 
               <button
                 onclick="visualizarApp('${projeto}')"
                 style="background:#475569;"
               >
-                ↗ Nova aba
+                â†— Nova aba
               </button>
 
             </div>
@@ -1285,23 +1095,23 @@
       const caminho = campo.value.trim().replace(/**\\\**/g, "/");
 
       if (!caminho) {
-        status.innerHTML = '<span class="error">❌ Informe o nome do arquivo.</span>';
+        status.innerHTML = '<span class="error">âŒ Informe o nome do arquivo.</span>';
         campo.focus();
         return;
       }
 
       if (caminho.startsWith("/") || caminho === ".." || caminho.includes("../")) {
-        status.innerHTML = '<span class="error">❌ Caminho de arquivo inválido.</span>';
+        status.innerHTML = '<span class="error">âŒ Caminho de arquivo invÃ¡lido.</span>';
         campo.focus();
         return;
       }
 
       if (houveAlteracao(projeto)) {
-        alert("Existe um arquivo com alterações não salvas. Salve ou desfaça antes de criar outro arquivo.");
+        alert("Existe um arquivo com alteraÃ§Ãµes nÃ£o salvas. Salve ou desfaÃ§a antes de criar outro arquivo.");
         return;
       }
 
-      status.textContent = "➕ Criando arquivo e backup de segurança...";
+      status.textContent = "âž• Criando arquivo e backup de seguranÃ§a...";
 
       try {
         const resposta = await fetch(`/api/apps/${projeto}/file`, {
@@ -1325,7 +1135,7 @@
 
         status.innerHTML = `
           <span class="saved">
-            ✅ ${dados.arquivo} criado. Backup: ${dados.backup}
+            âœ… ${dados.arquivo} criado. Backup: ${dados.backup}
           </span>
         `;
 
@@ -1340,7 +1150,7 @@
         );
 
       } catch (erro) {
-        status.innerHTML = `<span class="error">❌ ${erro.message}</span>`;
+        status.innerHTML = `<span class="error">âŒ ${erro.message}</span>`;
       }
     }
 
@@ -1396,26 +1206,26 @@
                   class="file-action"
                   style="background:${protegido ? "#475569" : "#d97706"};"
                   ${protegido ? "disabled" : ""}
-                  title="${protegido ? "index.html é protegido" : "Renomear arquivo"}"
+                  title="${protegido ? "index.html Ã© protegido" : "Renomear arquivo"}"
                   onclick="renomearArquivo(
                     '${projeto}',
                     '${encodeURIComponent(arquivo.path)}'
                   )"
                 >
-                  ✏️
+                  âœï¸
                 </button>
 
                 <button
                   class="file-action"
                   style="background:${protegido ? "#475569" : "#dc2626"};"
                   ${protegido ? "disabled" : ""}
-                  title="${protegido ? "index.html é protegido" : "Excluir arquivo"}"
+                  title="${protegido ? "index.html Ã© protegido" : "Excluir arquivo"}"
                   onclick="excluirArquivo(
                     '${projeto}',
                     '${encodeURIComponent(arquivo.path)}'
                   )"
                 >
-                  🗑️
+                  ðŸ—‘ï¸
                 </button>
 
               </div>
@@ -1424,7 +1234,7 @@
 
       } catch (erro) {
         area.innerHTML =
-          "❌ Não foi possível carregar os arquivos: " +
+          "âŒ NÃ£o foi possÃ­vel carregar os arquivos: " +
           erro.message;
       }
     }
@@ -1441,14 +1251,14 @@
 
       if (caminhoAtual === "index.html") {
         alert(
-          "O index.html é protegido e não pode ser renomeado."
+          "O index.html Ã© protegido e nÃ£o pode ser renomeado."
         );
         return;
       }
 
       if (houveAlteracao(projeto)) {
         alert(
-          "Existe um arquivo com alterações não salvas. Salve ou desfaça antes de renomear."
+          "Existe um arquivo com alteraÃ§Ãµes nÃ£o salvas. Salve ou desfaÃ§a antes de renomear."
         );
         return;
       }
@@ -1514,12 +1324,12 @@
         atualizarPreview(projeto);
 
         alert(
-          `✅ Arquivo renomeado com sucesso.\n\n${dados.arquivoAnterior} → ${dados.arquivo}\nBackup: ${dados.backup}`
+          `âœ… Arquivo renomeado com sucesso.\n\n${dados.arquivoAnterior} â†’ ${dados.arquivo}\nBackup: ${dados.backup}`
         );
 
       } catch (erro) {
         alert(
-          "❌ Não foi possível renomear: " +
+          "âŒ NÃ£o foi possÃ­vel renomear: " +
           erro.message
         );
       }
@@ -1537,21 +1347,21 @@
 
       if (caminho === "index.html") {
         alert(
-          "O index.html é protegido e não pode ser excluído."
+          "O index.html Ã© protegido e nÃ£o pode ser excluÃ­do."
         );
         return;
       }
 
       if (houveAlteracao(projeto)) {
         alert(
-          "Existe um arquivo com alterações não salvas. Salve ou desfaça antes de excluir."
+          "Existe um arquivo com alteraÃ§Ãµes nÃ£o salvas. Salve ou desfaÃ§a antes de excluir."
         );
         return;
       }
 
       const confirmar =
         window.confirm(
-          `Excluir definitivamente "${caminho}"?\n\nUma versão de segurança será criada automaticamente antes da exclusão.`
+          `Excluir definitivamente "${caminho}"?\n\nUma versÃ£o de seguranÃ§a serÃ¡ criada automaticamente antes da exclusÃ£o.`
         );
 
       if (!confirmar) {
@@ -1599,12 +1409,12 @@
         atualizarPreview(projeto);
 
         alert(
-          `✅ Arquivo excluído com sucesso.\n\nArquivo: ${dados.arquivo}\nBackup: ${dados.backup}`
+          `âœ… Arquivo excluÃ­do com sucesso.\n\nArquivo: ${dados.arquivo}\nBackup: ${dados.backup}`
         );
 
       } catch (erro) {
         alert(
-          "❌ Não foi possível excluir: " +
+          "âŒ NÃ£o foi possÃ­vel excluir: " +
           erro.message
         );
       }
@@ -1613,22 +1423,22 @@
 
     function iconeArquivo(caminho) {
       if (caminho.endsWith(".html")) {
-        return "📄";
+        return "ðŸ“„";
       }
 
       if (caminho.endsWith(".css")) {
-        return "🎨";
+        return "ðŸŽ¨";
       }
 
       if (caminho.endsWith(".js")) {
-        return "⚙️";
+        return "âš™ï¸";
       }
 
       if (caminho.endsWith(".json")) {
-        return "🧾";
+        return "ðŸ§¾";
       }
 
-      return "📄";
+      return "ðŸ“„";
     }
 
 
@@ -1645,7 +1455,7 @@
       ) {
         const continuar =
           confirm(
-            "Existem alterações não salvas.\n\nDeseja descartá-las e abrir outro arquivo?"
+            "Existem alteraÃ§Ãµes nÃ£o salvas.\n\nDeseja descartÃ¡-las e abrir outro arquivo?"
           );
 
         if (!continuar) {
@@ -1676,10 +1486,10 @@
       container.style.display = "block";
 
       nome.textContent =
-        "📄 " + caminho;
+        "ðŸ“„ " + caminho;
 
       codigo.value =
-        "Carregando código...";
+        "Carregando cÃ³digo...";
 
       codigo.disabled = true;
       status.textContent = "";
@@ -1722,7 +1532,7 @@
         codigo.disabled = true;
 
         status.innerHTML =
-          `<span class="error">❌ ${erro.message}</span>`;
+          `<span class="error">âŒ ${erro.message}</span>`;
       }
     }
 
@@ -1808,10 +1618,10 @@
 
       if (houveAlteracao(projeto)) {
         indicador.innerHTML =
-          '<span class="unsaved">● Não salvo</span>';
+          '<span class="unsaved">â— NÃ£o salvo</span>';
       } else {
         indicador.innerHTML =
-          '<span class="saved">✓ Salvo</span>';
+          '<span class="saved">âœ“ Salvo</span>';
       }
     }
 
@@ -1824,7 +1634,7 @@
 
       if (indicador) {
         indicador.innerHTML =
-          '<span class="saved">✓ Salvo</span>';
+          '<span class="saved">âœ“ Salvo</span>';
       }
     }
 
@@ -1870,7 +1680,7 @@
 
       if (indice === -1) {
         alert(
-          `Não encontrei "${termo}" neste arquivo.`
+          `NÃ£o encontrei "${termo}" neste arquivo.`
         );
         return;
       }
@@ -1900,7 +1710,7 @@
 
       const confirmar =
         window.confirm(
-          "Deseja descartar as alterações não salvas?"
+          "Deseja descartar as alteraÃ§Ãµes nÃ£o salvas?"
         );
 
       if (!confirmar) {
@@ -1919,7 +1729,7 @@
         );
 
       status.textContent =
-        "Alterações descartadas.";
+        "AlteraÃ§Ãµes descartadas.";
     }
 
 
@@ -1951,13 +1761,13 @@
 
       if (!houveAlteracao(projeto)) {
         status.innerHTML =
-          '<span class="saved">✓ Nenhuma alteração para salvar.</span>';
+          '<span class="saved">âœ“ Nenhuma alteraÃ§Ã£o para salvar.</span>';
         return;
       }
 
       const confirmar =
         window.confirm(
-          `Salvar alterações em ${caminho}?\n\nUma versão de segurança será criada automaticamente.`
+          `Salvar alteraÃ§Ãµes em ${caminho}?\n\nUma versÃ£o de seguranÃ§a serÃ¡ criada automaticamente.`
         );
 
       if (!confirmar) {
@@ -1967,7 +1777,7 @@
       botao.disabled = true;
 
       status.textContent =
-        "💾 Salvando e criando backup...";
+        "ðŸ’¾ Salvando e criando backup...";
 
       try {
         const resposta =
@@ -2004,7 +1814,7 @@
           <div class="success-box">
 
             <strong>
-              ✅ Arquivo salvo com sucesso!
+              âœ… Arquivo salvo com sucesso!
             </strong>
 
             <p>
@@ -2024,7 +1834,7 @@
 
       } catch (erro) {
         status.innerHTML =
-          `<span class="error">❌ ${erro.message}</span>`;
+          `<span class="error">âŒ ${erro.message}</span>`;
 
       } finally {
         botao.disabled = false;
@@ -2076,388 +1886,10 @@
     }
 
 
-
-    function escaparHtml(texto) {
-      return String(texto ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-
-    async function gerarPlanoIA(projeto) {
-      if (projetoAtivo !== projeto) {
-        alert(
-          "Este projeto nao esta ativo no editor."
-        );
-        return;
-      }
-
-      const pedidoCampo =
-        document.getElementById(
-          `pedido-${projeto}`
-        );
-
-      const resultado =
-        document.getElementById(
-          `resultado-${projeto}`
-        );
-
-      const planoContainer =
-        document.getElementById(
-          `plano-container-${projeto}`
-        );
-
-      const planoConteudo =
-        document.getElementById(
-          `plano-conteudo-${projeto}`
-        );
-
-      const pedido =
-        pedidoCampo
-          ? pedidoCampo.value.trim()
-          : "";
-
-      if (!pedido) {
-        alert(
-          "Descreva a alteracao desejada."
-        );
-        return;
-      }
-
-      if (houveAlteracao(projeto)) {
-        alert(
-          "Existe um arquivo com alteracoes nao salvas. Salve ou desfaça antes de gerar o plano."
-        );
-        return;
-      }
-
-      resultado.innerHTML =
-        "🧠 A IA esta analisando o projeto e criando o plano...";
-
-      if (planoContainer) {
-        planoContainer.style.display =
-          "none";
-      }
-
-      try {
-        const resposta =
-          await fetch(
-            "/api/edit/plan",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-              body: JSON.stringify({
-                projeto,
-                pedido
-              })
-            }
-          );
-
-        const dados =
-          await resposta.json();
-
-        if (!resposta.ok || !dados.success) {
-          throw new Error(
-            dados.error ||
-            "Erro ao gerar plano."
-          );
-        }
-
-        planosPendentes[projeto] = {
-          pedido,
-          plano: dados.plano,
-          resumo: dados.resumo,
-          alertas: dados.alertas || []
-        };
-
-        const itens =
-          Array.isArray(dados.plano)
-            ? dados.plano
-            : [];
-
-        let html = `
-          <strong>🧠 Plano proposto pela IA</strong>
-          <p>${escaparHtml(
-            dados.resumo || ""
-          )}</p>
-        `;
-
-        if (!itens.length) {
-          html += `
-            <p>
-              Nenhuma alteracao e necessaria.
-            </p>
-          `;
-        } else {
-          html += `
-            <div style="display:grid;gap:10px;margin-top:12px;">
-          `;
-
-          for (const item of itens) {
-            html += `
-              <div
-                style="
-                  padding:12px;
-                  border:1px solid #334155;
-                  border-radius:10px;
-                  background:#111827;
-                "
-              >
-                <strong>
-                  ${escaparHtml(
-                    String(item.tipo).toUpperCase()
-                  )}
-                  —
-                  ${escaparHtml(item.path)}
-                </strong>
-
-                <div
-                  class="muted"
-                  style="margin-top:6px;"
-                >
-                  ${escaparHtml(
-                    item.motivo || ""
-                  )}
-                </div>
-              </div>
-            `;
-          }
-
-          html += `</div>`;
-        }
-
-        if (
-          Array.isArray(dados.alertas) &&
-          dados.alertas.length
-        ) {
-          html += `
-            <div
-              style="
-                margin-top:12px;
-                padding:12px;
-                border:1px solid #f59e0b;
-                border-radius:10px;
-              "
-            >
-              <strong>⚠️ Alertas</strong>
-              <ul>
-                ${dados.alertas.map(
-                  alerta =>
-                    `<li>${escaparHtml(alerta)}</li>`
-                ).join("")}
-              </ul>
-            </div>
-          `;
-        }
-
-        planoConteudo.innerHTML = html;
-
-        planoContainer.style.display =
-          "block";
-
-        const botaoAprovar =
-          document.getElementById(
-            `aprovar-plano-${projeto}`
-          );
-
-        if (botaoAprovar) {
-          botaoAprovar.disabled =
-            itens.length === 0;
-        }
-
-        resultado.innerHTML =
-          "✅ Plano gerado. Revise antes de aplicar.";
-
-      } catch (erro) {
-        resultado.innerHTML =
-          "❌ Nao foi possivel gerar o plano: " +
-          escaparHtml(erro.message);
-      }
-    }
-
-
-    async function aprovarPlanoIA(projeto) {
-      const pendente =
-        planosPendentes[projeto];
-
-      if (
-        !pendente ||
-        !Array.isArray(pendente.plano)
-      ) {
-        alert(
-          "Nenhum plano pendente para aprovar."
-        );
-        return;
-      }
-
-      if (houveAlteracao(projeto)) {
-        alert(
-          "Existe um arquivo com alteracoes nao salvas. Salve ou desfaça antes de aplicar o plano."
-        );
-        return;
-      }
-
-      const confirmar =
-        window.confirm(
-          `Aplicar o plano aprovado no projeto "${projeto}"?\n\nUm backup sera criado antes das alteracoes.`
-        );
-
-      if (!confirmar) {
-        return;
-      }
-
-      const resultado =
-        document.getElementById(
-          `resultado-${projeto}`
-        );
-
-      const botao =
-        document.getElementById(
-          `aprovar-plano-${projeto}`
-        );
-
-      if (botao) {
-        botao.disabled = true;
-      }
-
-      resultado.innerHTML =
-        "⚙️ Aplicando plano aprovado...";
-
-      try {
-        const resposta =
-          await fetch(
-            "/api/edit/apply",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-              body: JSON.stringify({
-                projeto,
-                pedido:
-                  pendente.pedido,
-                plano:
-                  pendente.plano
-              })
-            }
-          );
-
-        const dados =
-          await resposta.json();
-
-        if (!resposta.ok || !dados.success) {
-          throw new Error(
-            dados.error ||
-            "Erro ao aplicar o plano."
-          );
-        }
-
-        resultado.innerHTML = `
-          <div class="success-box">
-            <strong>
-              ✅ Plano aplicado com sucesso!
-            </strong>
-
-            <p>
-              ${escaparHtml(
-                dados.answer || ""
-              )}
-            </p>
-
-            <p>
-              Operacoes:
-              <strong>
-                ${dados.quantidadeOperacoes}
-              </strong>
-            </p>
-
-            <p>
-              Backup:
-              <strong>
-                ${escaparHtml(
-                  dados.backup || "nenhum"
-                )}
-              </strong>
-            </p>
-          </div>
-        `;
-
-        delete planosPendentes[projeto];
-
-        const planoContainer =
-          document.getElementById(
-            `plano-container-${projeto}`
-          );
-
-        if (planoContainer) {
-          planoContainer.style.display =
-            "none";
-        }
-
-        await carregarArquivos(projeto);
-
-        arquivosAbertos[projeto] = null;
-        conteudosOriginais[projeto] = null;
-
-        const codigoContainer =
-          document.getElementById(
-            `codigo-container-${projeto}`
-          );
-
-        if (codigoContainer) {
-          codigoContainer.style.display =
-            "none";
-        }
-
-        atualizarPreview(projeto);
-
-      } catch (erro) {
-        resultado.innerHTML =
-          "❌ Nao foi possivel aplicar o plano: " +
-          escaparHtml(erro.message);
-
-        if (botao) {
-          botao.disabled = false;
-        }
-      }
-    }
-
-
-    function cancelarPlanoIA(projeto) {
-      delete planosPendentes[projeto];
-
-      const planoContainer =
-        document.getElementById(
-          `plano-container-${projeto}`
-        );
-
-      const resultado =
-        document.getElementById(
-          `resultado-${projeto}`
-        );
-
-      if (planoContainer) {
-        planoContainer.style.display =
-          "none";
-      }
-
-      if (resultado) {
-        resultado.innerHTML =
-          "Plano cancelado. Nenhum arquivo foi alterado.";
-      }
-    }
-
     async function editarAppExistente(projeto) {
       if (projetoAtivo !== projeto) {
         alert(
-          "Este projeto não está ativo no editor. Clique em Abrir editor antes de usar a IA."
+          "Este projeto nÃ£o estÃ¡ ativo no editor. Clique em Abrir editor antes de usar a IA."
         );
         return;
       }
@@ -2474,20 +1906,20 @@
 
       if (!pedido.trim()) {
         alert(
-          "Descreva a alteração desejada."
+          "Descreva a alteraÃ§Ã£o desejada."
         );
         return;
       }
 
       if (houveAlteracao(projeto)) {
         alert(
-          "Existe um arquivo com alterações não salvas. Salve ou desfaça antes de usar a IA."
+          "Existe um arquivo com alteraÃ§Ãµes nÃ£o salvas. Salve ou desfaÃ§a antes de usar a IA."
         );
         return;
       }
 
       resultado.innerHTML =
-        "✨ A inteligência artificial está editando...";
+        "âœ¨ A inteligÃªncia artificial estÃ¡ editando...";
 
       try {
         const resposta =
@@ -2516,7 +1948,7 @@
           <div class="success-box">
 
             <strong>
-              ✅ Alteração concluída!
+              âœ… AlteraÃ§Ã£o concluÃ­da!
             </strong>
 
             <p>
@@ -2554,284 +1986,11 @@
 
       } catch (erro) {
         resultado.innerHTML =
-          "❌ Não foi possível editar: " +
+          "âŒ NÃ£o foi possÃ­vel editar: " +
           erro.message;
       }
     }
 
-
-
-    function formatarDataHistoricoIA(data) {
-      try {
-        return new Date(data)
-          .toLocaleString("pt-BR");
-      } catch {
-        return data || "";
-      }
-    }
-
-
-    async function carregarHistoricoIA(projeto) {
-      const area =
-        document.getElementById(
-          `historico-ia-${projeto}`
-        );
-
-      if (!area) {
-        return;
-      }
-
-      /*
-        Se ja estiver aberto,
-        o mesmo botao fecha.
-      */
-      if (
-        area.dataset.aberto === "sim"
-      ) {
-        area.innerHTML = "";
-        area.dataset.aberto = "nao";
-        return;
-      }
-
-      area.dataset.aberto = "sim";
-
-      area.innerHTML = `
-        <div class="panel history-area">
-          🤖 Carregando Histórico da IA...
-        </div>
-      `;
-
-      try {
-        const resposta =
-          await fetch(
-            `/api/apps/${projeto}/ai-history`
-          );
-
-        const dados =
-          await resposta.json();
-
-        if (!resposta.ok || !dados.success) {
-          throw new Error(
-            dados.error ||
-            "Erro ao carregar Histórico da IA."
-          );
-        }
-
-        const registros =
-          Array.isArray(dados.registros)
-            ? dados.registros
-            : [];
-
-        if (!registros.length) {
-          area.innerHTML = `
-            <div class="panel history-area">
-              <h3>🤖 Histórico da IA</h3>
-
-              <p class="muted">
-                Nenhum registro de IA encontrado neste projeto.
-              </p>
-            </div>
-          `;
-          return;
-        }
-
-        let html = `
-          <div class="panel history-area">
-
-            <h3>
-              🤖 Histórico da IA — ${escaparHtml(projeto)}
-            </h3>
-
-            <p class="muted">
-              ${registros.length}
-              registro(s) encontrado(s).
-            </p>
-
-            <div
-              style="
-                display:grid;
-                gap:12px;
-                margin-top:14px;
-              "
-            >
-        `;
-
-        for (const registro of registros) {
-
-          const tipo =
-            registro.tipo ||
-            "registro";
-
-          const tituloTipo =
-            tipo === "plano_aplicado"
-              ? "✅ Plano aplicado"
-              : tipo === "plano_gerado"
-                ? "🧠 Plano gerado"
-                : "🤖 Registro da IA";
-
-          html += `
-            <div class="history-card">
-
-              <div
-                style="
-                  display:flex;
-                  justify-content:space-between;
-                  gap:10px;
-                  flex-wrap:wrap;
-                "
-              >
-                <strong>
-                  ${tituloTipo}
-                </strong>
-
-                <span class="muted">
-                  ${escaparHtml(
-                    formatarDataHistoricoIA(
-                      registro.data
-                    )
-                  )}
-                </span>
-              </div>
-          `;
-
-          if (registro.pedido) {
-            html += `
-              <div style="margin-top:10px;">
-                <strong>Pedido:</strong>
-                <div class="muted">
-                  ${escaparHtml(
-                    registro.pedido
-                  )}
-                </div>
-              </div>
-            `;
-          }
-
-          if (registro.resumo) {
-            html += `
-              <div style="margin-top:10px;">
-                <strong>Resumo:</strong>
-                <div class="muted">
-                  ${escaparHtml(
-                    registro.resumo
-                  )}
-                </div>
-              </div>
-            `;
-          }
-
-          const plano =
-            registro.plano ||
-            registro.planoAprovado;
-
-          if (
-            Array.isArray(plano) &&
-            plano.length
-          ) {
-            html += `
-              <div style="margin-top:10px;">
-                <strong>Plano:</strong>
-
-                <ul>
-                  ${plano.map(item => `
-                    <li>
-                      <strong>
-                        ${escaparHtml(
-                          String(
-                            item.tipo || ""
-                          ).toUpperCase()
-                        )}
-                      </strong>
-                      —
-                      ${escaparHtml(
-                        item.path || ""
-                      )}
-
-                      ${
-                        item.motivo
-                          ? `<div class="muted">
-                              ${escaparHtml(
-                                item.motivo
-                              )}
-                            </div>`
-                          : ""
-                      }
-                    </li>
-                  `).join("")}
-                </ul>
-              </div>
-            `;
-          }
-
-          if (
-            Array.isArray(
-              registro.operacoes
-            ) &&
-            registro.operacoes.length
-          ) {
-            html += `
-              <div style="margin-top:10px;">
-                <strong>
-                  Operações executadas:
-                </strong>
-
-                <ul>
-                  ${registro.operacoes.map(
-                    item => `
-                      <li>
-                        ${escaparHtml(
-                          String(
-                            item.tipo || ""
-                          ).toUpperCase()
-                        )}
-                        —
-                        ${escaparHtml(
-                          item.path || ""
-                        )}
-                      </li>
-                    `
-                  ).join("")}
-                </ul>
-              </div>
-            `;
-          }
-
-          if (registro.backup) {
-            html += `
-              <div style="margin-top:10px;">
-                <strong>Backup:</strong>
-                <code>
-                  ${escaparHtml(
-                    registro.backup
-                  )}
-                </code>
-              </div>
-            `;
-          }
-
-          html += `</div>`;
-        }
-
-        html += `
-            </div>
-          </div>
-        `;
-
-        area.innerHTML = html;
-
-      } catch (erro) {
-        area.innerHTML = `
-          <div class="panel history-area">
-            <span class="error">
-              ❌ Não foi possível carregar o Histórico da IA:
-              ${escaparHtml(
-                erro.message
-              )}
-            </span>
-          </div>
-        `;
-      }
-    }
 
     async function carregarHistorico(projeto) {
       const area =
@@ -2844,7 +2003,7 @@
       }
 
       area.innerHTML =
-        "\u{1F558} Carregando hist\u00F3rico de vers\u00F5es...";
+        "ðŸ•˜ Carregando histÃ³rico de versÃµes...";
 
       try {
         const resposta =
@@ -2858,14 +2017,14 @@
         if (!resposta.ok || !dados.success) {
           throw new Error(
             dados.error ||
-            "Erro ao carregar histórico."
+            "Erro ao carregar histÃ³rico."
           );
         }
 
         if (!dados.versoes.length) {
           area.innerHTML = `
             <p class="muted">
-              Nenhuma versão anterior encontrada.
+              Nenhuma versÃ£o anterior encontrada.
             </p>
           `;
           return;
@@ -2875,7 +2034,7 @@
           <div class="history-area">
 
             <h3>
-              🕘 Histórico de versões
+              ðŸ•˜ HistÃ³rico de versÃµes
             </h3>
 
             ${dados.versoes.map(versao => `
@@ -2893,7 +2052,7 @@
                       '${versao}'
                     )"
                   >
-                    👁 Visualizar versão
+                    ðŸ‘ Visualizar versÃ£o
                   </button>
 
                   <button
@@ -2903,7 +2062,7 @@
                     )"
                     style="background:#dc2626;"
                   >
-                    ↩ Restaurar versão
+                    â†© Restaurar versÃ£o
                   </button>
 
                 </div>
@@ -2916,7 +2075,7 @@
 
       } catch (erro) {
         area.innerHTML =
-          "❌ Não foi possível carregar o histórico: " +
+          "âŒ NÃ£o foi possÃ­vel carregar o histÃ³rico: " +
           erro.message;
       }
     }
@@ -2938,7 +2097,7 @@
         if (!resposta.ok || !dados.success) {
           throw new Error(
             dados.error ||
-            "Erro ao visualizar versão."
+            "Erro ao visualizar versÃ£o."
           );
         }
 
@@ -2950,7 +2109,7 @@
 
         if (!index) {
           throw new Error(
-            "Essa versão não possui index.html."
+            "Essa versÃ£o nÃ£o possui index.html."
           );
         }
 
@@ -2993,7 +2152,7 @@
 
         if (!janela) {
           alert(
-            "O navegador bloqueou a abertura da versão."
+            "O navegador bloqueou a abertura da versÃ£o."
           );
           return;
         }
@@ -3004,7 +2163,7 @@
 
       } catch (erro) {
         alert(
-          "❌ Não foi possível visualizar a versão: " +
+          "âŒ NÃ£o foi possÃ­vel visualizar a versÃ£o: " +
           erro.message
         );
       }
@@ -3017,14 +2176,14 @@
     ) {
       if (houveAlteracao(projeto)) {
         alert(
-          "Existe uma alteração manual não salva. Salve ou desfaça antes de restaurar."
+          "Existe uma alteraÃ§Ã£o manual nÃ£o salva. Salve ou desfaÃ§a antes de restaurar."
         );
         return;
       }
 
       const confirmar =
         window.confirm(
-          `Deseja restaurar a versão ${versao}?\n\nA versão atual será salva automaticamente antes da restauração.`
+          `Deseja restaurar a versÃ£o ${versao}?\n\nA versÃ£o atual serÃ¡ salva automaticamente antes da restauraÃ§Ã£o.`
         );
 
       if (!confirmar) {
@@ -3046,7 +2205,7 @@
         if (!resposta.ok || !dados.success) {
           throw new Error(
             dados.error ||
-            "Erro ao restaurar versão."
+            "Erro ao restaurar versÃ£o."
           );
         }
 
@@ -3059,12 +2218,12 @@
         await carregarHistorico(projeto);
 
         alert(
-          `✅ Versão restaurada com sucesso.\n\nVersão: ${dados.versaoRestaurada}\nBackup anterior: ${dados.backupAnterior}`
+          `âœ… VersÃ£o restaurada com sucesso.\n\nVersÃ£o: ${dados.versaoRestaurada}\nBackup anterior: ${dados.backupAnterior}`
         );
 
       } catch (erro) {
         alert(
-          "❌ Não foi possível restaurar a versão: " +
+          "âŒ NÃ£o foi possÃ­vel restaurar a versÃ£o: " +
           erro.message
         );
       }

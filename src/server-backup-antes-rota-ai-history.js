@@ -1751,62 +1751,6 @@ app.get(
     }
   }
 );
-
-/* =========================================================
-   HISTORICO DA IA DO PROJETO
-   Somente leitura.
-========================================================= */
-
-app.get(
-  "/api/apps/:projeto/ai-history",
-  (req, res) => {
-    try {
-      const {
-        projeto
-      } = req.params;
-
-      /*
-        Confirma que o projeto existe.
-      */
-      const projetoAtual =
-        lerProjeto(
-          projeto
-        );
-
-      const historico =
-        lerHistoricoIA(
-          projetoAtual.projeto
-        );
-
-      res.json({
-        success: true,
-
-        projeto:
-          historico.projeto,
-
-        registros:
-          historico.registros,
-
-        quantidade:
-          historico.registros.length
-      });
-
-    } catch (error) {
-      console.error(
-        "Erro ao carregar historico da IA:",
-        error
-      );
-
-      res.status(500).json({
-        success: false,
-        error:
-          error.message ||
-          "Erro ao carregar historico da IA."
-      });
-    }
-  }
-);
-
 const PORT =
   process.env.PORT || 3000;
 

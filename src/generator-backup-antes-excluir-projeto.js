@@ -1189,68 +1189,6 @@ function renomearProjeto(
       arquivos.length
   };
 }
-
-/* =========================================================
-   EXCLUIR PROJETO
-   Cria backup completo antes da exclusao.
-========================================================= */
-
-function excluirProjeto(
-  nomeProjeto
-) {
-  const {
-    nomeSeguro,
-    pastaBase
-  } = obterPastaProjeto(
-    nomeProjeto
-  );
-
-  if (
-    !fs.existsSync(
-      pastaBase
-    )
-  ) {
-    throw new Error(
-      "Projeto nao encontrado."
-    );
-  }
-
-  /*
-    Antes de apagar o projeto,
-    criamos um backup completo.
-  */
-
-  const backup =
-    criarBackupProjeto(
-      nomeSeguro
-    );
-
-  const arquivosAntes =
-    lerArquivosDaPasta(
-      pastaBase
-    );
-
-  fs.rmSync(
-    pastaBase,
-    {
-      recursive: true,
-      force: true
-    }
-  );
-
-  return {
-    success: true,
-
-    projeto:
-      nomeSeguro,
-
-    quantidadeArquivos:
-      arquivosAntes.length,
-
-    backup:
-      backup.versao
-  };
-}
 module.exports = {
   criarProjeto,
   lerProjeto,
@@ -1264,8 +1202,6 @@ module.exports = {
   excluirArquivoProjeto,
   aplicarOperacoesProjeto,
   duplicarProjeto,
-  renomearProjeto,
-  excluirProjeto
+  renomearProjeto
 };
-
 
