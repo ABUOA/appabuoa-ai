@@ -1,0 +1,69 @@
+[
+  {
+    "id": "1786734691008-qirbei",
+    "data": "2026-08-14T19:11:31.010Z",
+    "tipo": "plano_gerado",
+    "pedido": "Quando isso aparecer, o próximo passo é colocar um botão 🤖 Histórico da IA direto na interface, para você não precisar mais consultar pelo PowerShell.",
+    "resumo": "Adicionar um botão 🤖 Histórico da IA na interface principal e direcionar para uma página de histórico acessível pelo navegador.",
+    "plano": [
+      {
+        "tipo": "alterar",
+        "path": "index.html",
+        "motivo": "Incluir o botão/link 🤖 Histórico da IA na navegação ou área principal da interface."
+      },
+      {
+        "tipo": "alterar",
+        "path": "historico-teste.html",
+        "motivo": "Transformar a página de teste em uma página acessível de Histórico da IA, com título claro e botão de voltar."
+      },
+      {
+        "tipo": "alterar",
+        "path": "style.css",
+        "motivo": "Adicionar estilos para o novo botão e manter consistência visual com a interface existente."
+      }
+    ],
+    "alertas": [
+      "Se o histórico real da IA estiver disponível apenas via PowerShell ou arquivos locais não expostos ao navegador, será necessário integrar uma fonte de dados acessível pela interface."
+    ],
+    "quantidadeOperacoes": 3
+  },
+  {
+    "id": "1786728986726-hid2ob",
+    "data": "2026-08-14T17:36:26.726Z",
+    "tipo": "plano_aplicado",
+    "pedido": "Crie um arquivo chamado historico-teste.html com o título Teste Histórico IA. Não altere nenhum outro arquivo.",
+    "planoAprovado": [
+      {
+        "tipo": "criar",
+        "path": "historico-teste.html",
+        "motivo": "Atender ao pedido criando o arquivo com o título Teste Histórico IA."
+      }
+    ],
+    "resumo": "Criado o arquivo historico-teste.html com o título Teste Histórico IA.",
+    "operacoes": [
+      {
+        "tipo": "criar",
+        "path": "historico-teste.html"
+      }
+    ],
+    "quantidadeOperacoes": 1,
+    "backup": "2026-08-14_14-36-26-695",
+    "resultado": "sucesso"
+  },
+  {
+    "id": "1786728855373-bm8v7d",
+    "data": "2026-08-14T17:34:15.373Z",
+    "tipo": "plano_gerado",
+    "pedido": "Crie um arquivo chamado historico-teste.html com o título Teste Histórico IA. Não altere nenhum outro arquivo.",
+    "resumo": "Criar uma nova página HTML de teste histórico sem alterar arquivos existentes.",
+    "plano": [
+      {
+        "tipo": "criar",
+        "path": "historico-teste.html",
+        "motivo": "Atender ao pedido criando o arquivo com o título Teste Histórico IA."
+      }
+    ],
+    "alertas": [],
+    "quantidadeOperacoes": 1
+  }
+]

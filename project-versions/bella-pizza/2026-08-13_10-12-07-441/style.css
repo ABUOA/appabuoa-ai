@@ -291,18 +291,6 @@ body {
   font-weight: 800;
 }
 
-.observacao-entrega {
-  margin: -6px 0 16px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(255, 209, 102, 0.14);
-  border: 1px solid rgba(255, 209, 102, 0.35);
-  color: #ffd166;
-  font-size: 0.9rem;
-  font-weight: 800;
-  line-height: 1.35;
-}
-
 .itens-carrinho {
   display: flex;
   flex-direction: column;

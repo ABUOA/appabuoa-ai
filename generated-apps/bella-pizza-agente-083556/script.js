@@ -53,6 +53,7 @@ const totalEl = document.getElementById('total');
 const contadorItens = document.getElementById('contadorItens');
 const finalizarPedido = document.getElementById('finalizarPedido');
 const limparCarrinho = document.getElementById('limparCarrinho');
+const promocaoDia = document.getElementById('promocaoDia');
 
 function formatarMoeda(valor) {
   return valor.toLocaleString('pt-BR', {
@@ -63,17 +64,17 @@ function formatarMoeda(valor) {
 
 function renderizarCardapio() {
   listaPizzas.innerHTML = pizzas.map(pizza => `
-    <article class="card-pizza">
-      <div class="card-topo">
-        <div class="emoji-pizza">${pizza.emoji}</div>
+    <article class='card-pizza'>
+      <div class='card-topo'>
+        <div class='emoji-pizza'>${pizza.emoji}</div>
         <div>
           <h3>${pizza.nome}</h3>
           <p>${pizza.descricao}</p>
         </div>
       </div>
-      <div class="card-rodape">
-        <span class="preco">${formatarMoeda(pizza.preco)}</span>
-        <button class="botao-adicionar" onclick="adicionarAoCarrinho(${pizza.id})">Adicionar</button>
+      <div class='card-rodape'>
+        <span class='preco'>${formatarMoeda(pizza.preco)}</span>
+        <button class='botao-adicionar' onclick='adicionarAoCarrinho(${pizza.id})'>Adicionar</button>
       </div>
     </article>
   `).join('');
@@ -122,7 +123,7 @@ function contarItens() {
 }
 
 function obterFormaPagamento() {
-  const pagamentoSelecionado = document.querySelector('input[name="formaPagamento"]:checked');
+  const pagamentoSelecionado = document.querySelector('input[name=formaPagamento]:checked');
   return pagamentoSelecionado ? pagamentoSelecionado.value : 'PIX';
 }
 
@@ -146,18 +147,24 @@ function atualizarCarrinho() {
   }
 
   itensCarrinho.innerHTML = carrinho.map(item => `
-    <div class="item-carrinho">
-      <div class="item-info">
+    <div class='item-carrinho'>
+      <div class='item-info'>
         <strong>${item.nome}</strong>
         <span>${formatarMoeda(item.preco * item.quantidade)}</span>
       </div>
-      <div class="controles">
-        <button onclick="removerUmaUnidade(${item.id})" aria-label="Remover uma unidade">−</button>
-        <span class="quantidade">Qtd. ${item.quantidade}</span>
-        <button onclick="adicionarUmaUnidade(${item.id})" aria-label="Adicionar uma unidade">+</button>
+      <div class='controles'>
+        <button onclick='removerUmaUnidade(${item.id})' aria-label='Remover uma unidade'>−</button>
+        <span class='quantidade'>Qtd. ${item.quantidade}</span>
+        <button onclick='adicionarUmaUnidade(${item.id})' aria-label='Adicionar uma unidade'>+</button>
       </div>
     </div>
   `).join('');
+}
+
+if (promocaoDia) {
+  promocaoDia.addEventListener('click', () => {
+    alert('Hoje tem promoção especial na Bella Pizza!');
+  });
 }
 
 limparCarrinho.addEventListener('click', () => {
