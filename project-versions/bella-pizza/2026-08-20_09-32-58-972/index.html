@@ -1,0 +1,112 @@
+<!-- testes AppABUOA -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bella Pizza</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topo">
+    <nav class="nav">
+      <div class="logo">🍕 Bella Pizza</div>
+      <div class="links">
+        <a href="#inicio">Início</a>
+        <a href="#cardapio">Cardápio</a>
+        <a href="#pedido">Pedido</a>
+        <a href="sobre.html">Sobre</a>
+        <a href="contato.html">Contato</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <div class="hero-conteudo">
+        <span class="tag">Forno a lenha • Massa artesanal</span>
+        <h1>A pizza perfeita para deixar seu dia mais saboroso.</h1>
+        <p>Peça agora e receba quentinho</p>
+        <p>Escolha suas pizzas favoritas no cardápio da Bella Pizza, adicione ao carrinho e acompanhe o total do seu pedido em tempo real.</p>
+        <a href="#cardapio" class="botao-principal">Ver cardápio</a>
+      </div>
+      <div class="hero-card">
+        <div class="pizza-visual">🍕</div>
+        <h2>Entrega rápida</h2>
+        <p>Pedidos quentinhos, preparados com ingredientes selecionados.</p>
+      </div>
+    </section>
+
+    <section id="cardapio" class="secao">
+      <div class="titulo-secao">
+        <span>Nosso cardápio</span>
+        <h2>Pizzas favoritas da casa</h2>
+      </div>
+
+      <div class="layout-pedido">
+        <div class="grid-cardapio" id="listaPizzas"></div>
+
+        <aside id="pedido" class="carrinho">
+          <div class="carrinho-topo">
+            <h2>Seu pedido</h2>
+            <span id="contadorItens">0 itens</span>
+          </div>
+
+          <p class="observacao-entrega">Entrega grátis acima de R$ 100</p>
+
+          <div id="itensCarrinho" class="itens-carrinho">
+            <p class="vazio">Seu carrinho está vazio.</p>
+          </div>
+
+          <div class="resumo">
+            <div class="linha-resumo">
+              <span>Subtotal</span>
+              <strong id="subtotal">R$ 0,00</strong>
+            </div>
+            <div class="linha-resumo">
+              <span>Entrega</span>
+              <strong id="entrega">R$ 0,00</strong>
+            </div>
+            <div class="linha-resumo total">
+              <span>Total</span>
+              <strong id="total">R$ 0,00</strong>
+            </div>
+          </div>
+
+          <div class="pagamento">
+            <h3>Forma de pagamento</h3>
+            <div class="opcoes-pagamento">
+              <label class="opcao-pagamento" for="pagamentoPix">
+                <input type="radio" id="pagamentoPix" name="formaPagamento" value="PIX" checked>
+                <span class="icone-pagamento">◆</span>
+                <span class="texto-pagamento">
+                  <strong>PIX</strong>
+                  <small>Pagamento rápido e seguro na confirmação do pedido.</small>
+                </span>
+              </label>
+
+              <label class="opcao-pagamento" for="pagamentoCartao">
+                <input type="radio" id="pagamentoCartao" name="formaPagamento" value="Cartão de crédito">
+                <span class="icone-pagamento">💳</span>
+                <span class="texto-pagamento">
+                  <strong>Cartão de crédito</strong>
+                  <small>Pague com cartão na entrega ou na retirada do pedido.</small>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <button id="finalizarPedido" class="botao-finalizar" disabled>Finalizar pedido</button>
+          <button id="limparCarrinho" class="botao-limpar" disabled>Limpar carrinho</button>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <p>Bella Pizza © 2026 • Sabor italiano na sua casa</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

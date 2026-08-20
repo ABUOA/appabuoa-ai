@@ -1,5 +1,60 @@
 [
   {
+    "id": "1787229179079-xv1kup",
+    "data": "2026-08-20T12:32:59.081Z",
+    "tipo": "plano_aplicado",
+    "pedido": "Troque apenas a cor do título \"Bella Pizza\" no cabeçalho para azul. Não altere textos, estrutura, imagens, links ou outras cores do site.",
+    "planoAprovado": [
+      {
+        "tipo": "alterar",
+        "path": "style.css",
+        "motivo": "Ajustar a propriedade color da classe .logo para azul sem modificar textos, estrutura, imagens, links ou outras cores."
+      }
+    ],
+    "resumo": "Alterada apenas a cor do título Bella Pizza no cabeçalho para azul.",
+    "operacoes": [
+      {
+        "tipo": "alterar",
+        "path": "style.css"
+      }
+    ],
+    "quantidadeOperacoes": 1,
+    "backup": "2026-08-20_09-32-58-972",
+    "resultado": "sucesso"
+  },
+  {
+    "id": "1787229132809-plpq2g",
+    "data": "2026-08-20T12:32:12.818Z",
+    "tipo": "plano_gerado",
+    "pedido": "Troque apenas a cor do título \"Bella Pizza\" no cabeçalho para azul. Não altere textos, estrutura, imagens, links ou outras cores do site.",
+    "resumo": "Alterar somente a cor do título Bella Pizza no cabeçalho para azul, preservando todo o restante do site.",
+    "plano": [
+      {
+        "tipo": "alterar",
+        "path": "style.css",
+        "motivo": "Ajustar a propriedade color da classe .logo para azul sem modificar textos, estrutura, imagens, links ou outras cores."
+      }
+    ],
+    "alertas": [],
+    "quantidadeOperacoes": 1
+  },
+  {
+    "id": "1787191056478-o13our",
+    "data": "2026-08-20T01:57:36.481Z",
+    "tipo": "plano_gerado",
+    "pedido": "Troque apenas a cor do título \"Bella Pizza\" no cabeçalho para azul. Não altere textos, estrutura, imagens, links ou outras cores do site.",
+    "resumo": "Alterar apenas a cor do título Bella Pizza no cabeçalho para azul, preservando todo o restante do site.",
+    "plano": [
+      {
+        "tipo": "alterar",
+        "path": "style.css",
+        "motivo": "A classe .logo controla a cor do título no cabeçalho; será ajustada somente para azul."
+      }
+    ],
+    "alertas": [],
+    "quantidadeOperacoes": 1
+  },
+  {
     "id": "1786918602656-wjdfrg",
     "data": "2026-08-16T22:16:42.656Z",
     "tipo": "plano_aplicado",
