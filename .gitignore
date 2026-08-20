@@ -1,2 +1,10 @@
 ﻿node_modules/
 .env
+
+# Backups locais da interface
+public/index-backup-*.html
+public/index-antes-*.html
+public/index copy*.html
+
+# Versoes locais geradas durante testes
+project-versions/
