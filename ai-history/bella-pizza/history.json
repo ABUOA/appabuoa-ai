@@ -1,0 +1,41 @@
+[
+  {
+    "id": "1786918602656-wjdfrg",
+    "data": "2026-08-16T22:16:42.656Z",
+    "tipo": "plano_aplicado",
+    "pedido": "mudar o valor da margerita para R$49,90",
+    "planoAprovado": [
+      {
+        "tipo": "alterar",
+        "path": "script.js",
+        "motivo": "Alterar o valor da pizza Margherita de 39.9 para 49.9 para exibir R$ 49,90 e calcular corretamente no carrinho."
+      }
+    ],
+    "resumo": "Alterado o preço da pizza Margherita para R$ 49,90.",
+    "operacoes": [
+      {
+        "tipo": "alterar",
+        "path": "script.js"
+      }
+    ],
+    "quantidadeOperacoes": 1,
+    "backup": "2026-08-16_19-16-42-588",
+    "resultado": "sucesso"
+  },
+  {
+    "id": "1786918534948-h83a23",
+    "data": "2026-08-16T22:15:34.948Z",
+    "tipo": "plano_gerado",
+    "pedido": "mudar o valor da margerita para R$49,90",
+    "resumo": "Atualizar o preço da pizza Margherita para R$ 49,90 no cardápio.",
+    "plano": [
+      {
+        "tipo": "alterar",
+        "path": "script.js",
+        "motivo": "Alterar o valor da pizza Margherita de 39.9 para 49.9 para exibir R$ 49,90 e calcular corretamente no carrinho."
+      }
+    ],
+    "alertas": [],
+    "quantidadeOperacoes": 1
+  }
+]

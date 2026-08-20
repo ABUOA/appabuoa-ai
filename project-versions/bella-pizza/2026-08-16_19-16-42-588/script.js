@@ -3,7 +3,7 @@ const pizzas = [
     id: 1,
     nome: 'Margherita',
     descricao: 'Molho de tomate, muçarela, manjericão fresco e azeite especial.',
-    preco: 49.9,
+    preco: 39.9,
     emoji: '🍅'
   },
   {
