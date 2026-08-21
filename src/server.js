@@ -22,6 +22,9 @@ const {
   lerHistoricoIA
 } = require("./ai-history");
 
+const session = require("express-session");
+const bcrypt = require("bcryptjs");
+const helmet = require("helmet");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -31,9 +34,112 @@ const { ZipArchive } = require("archiver");
 require("dotenv").config();
 
 const app = express();
-
-app.use(cors());
+app.use(helmet({
+  contentSecurityPolicy: false
+}));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 8
+  }
+}));
 app.use(express.json());
+function autenticarApi(req, res, next) {
+  if (req.session && req.session.autenticado === true) {
+    return next();
+  }
+
+  const tokenConfigurado = process.env.APP_API_TOKEN;
+  const tokenRecebido = req.headers["x-app-token"];
+
+  if (
+    tokenConfigurado &&
+    tokenRecebido &&
+    tokenRecebido === tokenConfigurado
+  ) {
+    return next();
+  }
+
+  return res.status(401).json({
+    success: false,
+    error: "Não autorizado."
+  });
+}
+
+  app.use(cors({
+  origin: process.env.APP_ORIGIN || "http://localhost:3000"
+}));
+app.use(express.json({ limit: "2mb" }));
+app.post("/api/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const usuarioCorreto =
+      username === process.env.ADMIN_USERNAME;
+
+    const senhaCorreta =
+      await bcrypt.compare(
+        String(password || ""),
+        process.env.ADMIN_PASSWORD_HASH || ""
+      );
+
+    if (!usuarioCorreto || !senhaCorreta) {
+      return res.status(401).json({
+        success: false,
+        error: "Usuário ou senha inválidos."
+      });
+    }
+
+    req.session.autenticado = true;
+    req.session.usuario = username;
+
+    res.json({
+      success: true,
+      usuario: username
+    });
+
+  } catch (error) {
+    console.error("Erro no login:", error);
+
+    res.status(500).json({
+      success: false,
+      error: "Erro ao realizar login."
+    });
+  }
+});
+app.get("/api/session", (req, res) => {
+  res.json({
+    success: true,
+    autenticado:
+      req.session &&
+      req.session.autenticado === true,
+    usuario:
+      req.session?.usuario || null
+  });
+});
+app.post("/api/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        error: "Erro ao encerrar sessão."
+      });
+    }
+
+    res.clearCookie("connect.sid");
+
+    res.json({
+      success: true,
+      message: "Logout realizado com sucesso."
+    });
+  });
+});
+app.use("/api", autenticarApi);
 app.use(express.static("public"));
 app.use("/apps", express.static("generated-apps"));
 
