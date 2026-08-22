@@ -619,15 +619,23 @@
 
 <script>
 async function verificarSessao() {
-  const resposta = await fetch("/api/session");
-  const dados = await resposta.json();
+  try {
+    const resposta = await fetch("/api/session");
+    const dados = await resposta.json();
 
-  const loginScreen = document.getElementById("login-screen");
+    const loginScreen = document.getElementById("login-screen");
 
-  if (dados.autenticado) {
-    loginScreen.style.display = "none";
-  } else {
-    loginScreen.style.display = "flex";
+    if (!loginScreen) {
+      return;
+    }
+
+    if (dados.autenticado) {
+      loginScreen.style.display = "none";
+    } else {
+      loginScreen.style.display = "flex";
+    }
+  } catch (error) {
+    console.error("Erro ao verificar sessão:", error);
   }
 }
 
@@ -665,8 +673,8 @@ async function fazerLogin() {
       return;
     }
 
-    document.getElementById("login-screen").style.display = "none";
     location.reload();
+
   } catch (error) {
     erro.textContent =
       "Não foi possível conectar ao servidor.";
@@ -674,22 +682,47 @@ async function fazerLogin() {
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  document
-    .getElementById("login-button")
-    .addEventListener("click", fazerLogin);
+async function fazerLogout() {
+  try {
+    const resposta = await fetch("/api/logout", {
+      method: "POST"
+    });
 
-  document
-    .getElementById("login-password")
-    .addEventListener("keydown", (event) => {
+    const dados = await resposta.json();
+
+    if (!resposta.ok || !dados.success) {
+      alert(dados.error || "Erro ao sair.");
+      return;
+    }
+
+    location.reload();
+
+  } catch (error) {
+    alert("Não foi possível encerrar a sessão.");
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const botaoLogin =
+    document.getElementById("login-button");
+
+  const campoSenha =
+    document.getElementById("login-password");
+
+  if (botaoLogin) {
+    botaoLogin.addEventListener("click", fazerLogin);
+  }
+
+  if (campoSenha) {
+    campoSenha.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         fazerLogin();
       }
     });
+  }
 
   verificarSessao();
 });
-
 </script>
 <body>
 
@@ -777,6 +810,12 @@ window.addEventListener("DOMContentLoaded", () => {
     <div class="subtitulo">
       Transforme suas ideias em aplicativos com inteligência artificial.
     </div>
+
+    <div style="text-align:center; margin-bottom:20px;">
+  <button type="button" onclick="fazerLogout()">
+    Sair
+  </button>
+</div>
 
     <div class="creator">
 
