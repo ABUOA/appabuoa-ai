@@ -8,3 +8,5 @@ public/index copy*.html
 
 # Versoes locais geradas durante testes
 project-versions/
+# Sessoes locais
+sessions/

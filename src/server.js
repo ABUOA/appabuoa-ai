@@ -23,6 +23,7 @@ const {
 } = require("./ai-history");
 
 const session = require("express-session");
+const FileStore = require("session-file-store")(session);
 const bcrypt = require("bcryptjs");
 const helmet = require("helmet");
 const express = require("express");
@@ -39,6 +40,10 @@ app.use(helmet({
 }));
 app.use(session({
   secret: process.env.SESSION_SECRET,
+    store: new FileStore({
+    path: "./sessions",
+    retries: 1
+  }),
   resave: false,
   saveUninitialized: false,
   cookie: {
